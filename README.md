@@ -10,6 +10,7 @@
 ## Tech Stack:
 
 The web application we wish to move forward with will be an augmented subleasing platform for UF Students. The features we wish to implement include viewing, posting, chat messaging, and possibly web scraping the data off of facebook marketplace. We wish to create a web application using the following:
+
 - React
 - TypeScript
 - Gin
