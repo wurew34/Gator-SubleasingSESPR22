@@ -1,6 +1,6 @@
 # Gator-Subleasing
 
-## Our group consists of the following students:
+## Group Members:
 
 - Munish Tanwar
 - Shreyas Kalikar
