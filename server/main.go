@@ -21,6 +21,7 @@ func main() {
 	}
 	defer client.Disconnect(ctx)
 	fmt.Println("Connected to MongoDB!")
+  
 	database := client.Database("quickstart")
 	userCollection := database.Collection("users")
 
