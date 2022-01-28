@@ -14,12 +14,6 @@ function App() {
             <Link to="/aboutus">About Us</Link>
           </Navigation>
         </Header>
-        <Drawer>
-        <Navigation>
-            <Link to="/login">Log-In</Link>
-            <Link to="/aboutus">About Us</Link>
-          </Navigation>
-        </Drawer>
         <Content>
           <div className='page-content' />
           <Main/>
