@@ -1,18 +1,18 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/wurew34/Gator-SubleasingSESPR22/configs"
-  "github.com/gin-gonic/gin"
-  "github.com/wurew34/Gator-SubleasingSESPR22/routes"
+	// "github.com/wurew34/Gator-SubleasingSESPR22/routes"
 )
 
 func main() {
+	configs.ConnectDB()
 
-  r := gin.Default()
+	r := gin.Default()
+	r.Use(gin.Logger())
+	// routes.UserRoute(r)
 
-  routes.UserRoute(r)
-  configs.ConnectDB()
-
-  r.Run("localhost:8080")
+	r.Run("localhost:8080")
 
 }
