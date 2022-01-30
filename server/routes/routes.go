@@ -9,6 +9,7 @@ import (
 func UserRoute(router *gin.Engine) {
 	// router.Use(middleware.Authentication())
 	router.POST("/users/signup", controller.CreateUser())
+	// router.POST("/users/login", controller.LoginUser())
 	// router.GET("/users/:id", controller.GetUser)
 
 }
