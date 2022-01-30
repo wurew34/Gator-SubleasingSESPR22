@@ -26,12 +26,15 @@ class Signup extends Component {
                   <h2>Sign Up</h2>
                 </Grid> 
                 <form>
-                <Grid container direction={"column"} spacing={5}>
+                <Grid container direction={"column"} spacing={3}>
+                 <Grid item>
+                <TextField label ='Enter First Name' placeholder='Enter First Name' fullWidth required/>
+                </Grid>
+                <Grid item>
+                <TextField label ='Enter Last Name' placeholder='Enter Last Name' fullWidth required/>
+                </Grid>
                 <Grid item>
                 <TextField label ='E-mail Address' placeholder='Enter E-mail Address' fullWidth required/>
-                </Grid>
-                 <Grid item>
-                <TextField label ='Create Username' placeholder='Enter Username' fullWidth required/>
                 </Grid>
                 <Grid item>
                 <TextField label ='Create Password' placeholder='Enter Password' type='password' fullWidth required/>
