@@ -28,7 +28,7 @@ class Login extends Component {
                 <form>
                 <Grid container direction={"column"} spacing={5}>
                  <Grid item>
-                <TextField label ='Username' placeholder='Enter Username' fullWidth required/>
+                <TextField label ='E-mail Address' placeholder='Enter E-mail Address' fullWidth required/>
                 </Grid>
                 <Grid item>
                 <TextField label ='Password' placeholder='Enter Password' type='password' fullWidth required/>
@@ -37,7 +37,8 @@ class Login extends Component {
                 <Button variant="contained" type='submit' color='primary' fullWidth>Sign in</Button>
                 </Grid>
                 <Grid item>
-                <a href="/signup"><Typography>Create an account!</Typography></a>
+                <Typography align='center'>Don't have an account?</Typography>
+                <a href="/signup"><Typography>Sign up!</Typography></a>
                 </Grid> 
                 </Grid>
                 </form>
