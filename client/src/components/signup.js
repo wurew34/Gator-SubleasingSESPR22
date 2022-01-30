@@ -31,7 +31,7 @@ class Signup extends Component {
                 <TextField label ='Enter First Name' placeholder='Enter First Name' fullWidth required/>
                 </Grid>
                 <Grid item>
-                <TextField label ='Enter Username' placeholder='Enter Username' fullWidth required/>
+                <TextField label ='Enter Last Name' placeholder='Enter Last Name' fullWidth required/>
                 </Grid>
                 <Grid item>
                 <TextField label ='E-mail Address' placeholder='Enter E-mail Address' fullWidth required/>
