@@ -4,11 +4,11 @@ import logo from'./Images/container logo.PNG';
 import './styles.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link } from "react-router-dom";
 
-class Login extends Component {
+
+class Signup extends Component {
     render() {
-      const paperStyle = {padding:20, height:'70vh', width:500, margin:"20px  auto"}
+        const paperStyle = {padding : 20, height:'70vh', width:500, margin:"20px  auto"}
       const theme = createTheme({
         palette: {
           background: {
@@ -23,21 +23,28 @@ class Login extends Component {
               <Paper elevation={10} style={paperStyle}>
                 <Grid align='center'>
                   <img src={logo} alt="My logo"/>
-                  <h2>Sign in</h2>
+                  <h2>Sign Up</h2>
                 </Grid> 
                 <form>
                 <Grid container direction={"column"} spacing={5}>
+                <Grid item>
+                <TextField label ='E-mail Address' placeholder='Enter E-mail Address' fullWidth required/>
+                </Grid>
                  <Grid item>
-                <TextField label ='Username' placeholder='Enter Username' fullWidth required/>
+                <TextField label ='Create Username' placeholder='Enter Username' fullWidth required/>
                 </Grid>
                 <Grid item>
-                <TextField label ='Password' placeholder='Enter Password' type='password' fullWidth required/>
+                <TextField label ='Create Password' placeholder='Enter Password' type='password' fullWidth required/>
                 </Grid>
                 <Grid item>
-                <Button variant="contained" type='submit' color='primary' fullWidth>Sign in</Button>
+                <TextField label ='Confirm Password' placeholder='Enter Password' type='password' fullWidth required/>
                 </Grid>
                 <Grid item>
-                <a href="/signup"><Typography>Create an account!</Typography></a>
+                <Button variant="contained" type='submit' color='primary' fullWidth>Register</Button>
+                </Grid>
+                <Grid item>
+                <Typography align='center'>Already have an account?</Typography>
+                <a href="/login"><Typography> Sign in!</Typography></a>
                 </Grid> 
                 </Grid>
                 </form>
@@ -48,4 +55,5 @@ class Login extends Component {
     }
 }
 
-export default Login;
+
+export default Signup;

@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Landing from './components/landing';
 import Login from "./components/login";
-import AboutUs from "./components/aboutus";
+import Signup from "./components/signup";
 
 function Main() {
     return(
@@ -10,7 +10,7 @@ function Main() {
     <Routes>
     <Route path="/" element={<Landing/>} />
     <Route path="/login" element={<Login/>}/>
-    <Route path="/aboutus" element={<AboutUs/>} />
+    <Route path="/signup" element={<Signup/>}/>
     </Routes>
 </div>
 );
