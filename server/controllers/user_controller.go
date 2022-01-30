@@ -51,6 +51,14 @@ func CreateUser() gin.HandlerFunc {
 			return
 		}
 
+		validationErr := validate.Struct(user)
+		if validationErr != nil {
+			log.Panic("Validation Error: ", validationErr)
+			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
+			return
+		}
+		fmt.Println(user.First_name)
+
 		count, err := userCollection.CountDocuments(ctx, bson.M{"email": user.Email})
 		defer cancel()
 		if err != nil {
