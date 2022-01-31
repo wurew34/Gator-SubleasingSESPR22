@@ -42,6 +42,12 @@ func VerifyPassword(userPassword string, givenPassword string) (bool, string) {
 }
 func CreateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		//allow all origins
+		c.Header("Content-Type", "application/json")
+		c.Header("Access-Control-Allow-Origin", "*")
+		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
+
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var user models.User
