@@ -2,11 +2,10 @@ img {
   border-radius: 15px;
 }
 
-h1 {
+h2 {
+  font-size: 30px;
   font-weight: bold;
   color: #000;
-  font-size: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 a {
@@ -14,6 +13,7 @@ a {
 }
 
 a:link {
+  color: white;
   text-decoration: none;
 }
 
@@ -27,4 +27,9 @@ a:hover {
 
 a:active {
   color: blue;
+}
+
+#particle-js {
+  position: fixed;
+  z-index: -1;
 }
