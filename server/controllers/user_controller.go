@@ -63,7 +63,7 @@ func CreateUser() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
 			return
 		}
-		
+
 		count, err := userCollection.CountDocuments(ctx, bson.M{"email": user.Email})
 		defer cancel()
 		if err != nil {
@@ -97,5 +97,21 @@ func CreateUser() gin.HandlerFunc {
 		defer cancel()
 
 		c.JSON(http.StatusOK, resultInsertionNumber)
+	}
+}
+
+func GetUser() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userId := c.Param("user_id")
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		var user models.User
+		filter := bson.M{"user_id": userId}
+		err := userCollection.FindOne(ctx, filter).Decode(&user)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
+			return
+		}
+		c.JSON(http.StatusOK, user)
 	}
 }
