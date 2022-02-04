@@ -1,29 +1,33 @@
-import React, { Component } from 'react';
-import { Grid, Cell } from 'react-mdl';
+import Image from "./Images/Oak-Park-City-Apartments-0004.jpg";
+import { makeStyles } from "@mui/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
-
-class Landing extends Component {
-    render() {
-        return(
-            <div style={{width: '100%', margin: 'auto'}}>
-                <Grid className="landing-grid">
-                    <Cell col={12}>
-                        <img
-                        src="https://static.techspot.com/images2/downloads/topdownload/2016/11/7dda385ed3724fea700d45a0349d9e77.png"
-                        alt="logo"
-                        className="logo-img"
-                        />
-
-                        <div className="banner-text">
-                            <h1>Welcome to Gator Subleasing!</h1>
-                        </div>
-
-                    </Cell>
-
-                </Grid>
-                </div>
-        )
+const useStyles = makeStyles((theme) => ({
+    root: {
+        minHeight: '100vh',
+        backgroundImage: `url(${Image})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+    },
+    title: {
+        textAlign: "center",
+        padding: 350,
+        fontFamily: 'Nunito',
+        color: '#FFF',
+        fontSize: '4.5rem',
     }
-}
+}));
+
+const Landing = () => {
+        const classes = useStyles();
+        return(
+                <div className={classes.root}>
+                    <CssBaseline/>
+                    <h1 className={classes.title}>Welcome to Gator Subleasing!</h1>
+                </div>
+                
+        )
+    
+};
 
 export default Landing;
