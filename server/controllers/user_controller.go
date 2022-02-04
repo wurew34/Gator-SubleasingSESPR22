@@ -40,6 +40,7 @@ func VerifyPassword(userPassword string, givenPassword string) (bool, string) {
 	}
 	return true, ""
 }
+
 func CreateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -90,7 +91,8 @@ func CreateUser() gin.HandlerFunc {
 
 		resultInsertionNumber, insertErr := userCollection.InsertOne(ctx, user)
 		if insertErr != nil {
-			msg := fmt.Sprintf("User was not created")
+			msg := fmt.Sprintf("User w
+			as not created")
 			c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
 			return
 		}
@@ -99,136 +101,43 @@ func CreateUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, resultInsertionNumber)
 	}
 }
-func LoginUser() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
-		defer cancel()
-		var user models.User
-		var searchUser models.User
-
-		if err := c.BindJSON(&user); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		filter := bson.M{"email": user.Email}
-		err := userCollection.FindOne(ctx, filter).Decode(&searchUser)
-		defer cancel()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
-			return
-		}
-
-		isValid, msg := VerifyPassword(*user.Password, *searchUser.Password)
-		if isValid != true {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
-			return
-		}
-		if searchUser.Email == nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "email is not registered"})
-			return
-		}
-		token, refreshToken, _ := helper.GenerateTokens(*searchUser.First_name, *searchUser.Last_name, *searchUser.Email, searchUser.User_id)
-		helper.UpdateTokens(token, refreshToken, searchUser.User_id)
-
-		err = userCollection.FindOne(ctx, filter).Decode(&searchUser)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
-			return
-		}
-
-		c.SetCookie(
-			"token",
-			token,
-			3600,
-			"",
-			"",
-			false,
-			true,
-		)
-
-		c.JSON(http.StatusOK, gin.H{"token": token, "refresh_token": refreshToken, "user": searchUser})
-	}
-}
-
-func GetUser() gin.HandlerFunc {
-	return func(c *gin.Context) {
-
-		cookie, cookie_err := c.Cookie("token")
-		if cookie == "" || cookie_err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-			return
-		}
-		token, msg := helper.ValidateToken(cookie)
-		if msg != "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"authentication error": "user is not authenticated"})
-			return
-		}
-
-		userId := token.Uid
-		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
-		defer cancel()
-		var user models.User
-		filter := bson.M{"user_id": userId}
-		err := userCollection.FindOne(ctx, filter).Decode(&user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
-			return
-		}
-		c.JSON(http.StatusOK, user)
-	}
-}
-func GetUserById() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		userId := c.Param("userId")
-		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
-		defer cancel()
-		var user models.User
-		filter := bson.M{"user_id": userId}
-		err := userCollection.FindOne(ctx, filter).Decode(&user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
-			return
-		}
-		c.JSON(http.StatusOK, user)
-	}
-}
 
 func LoginUser() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
-		defer cancel()
-		var user models.User
-		var searchUser models.User
+    return func(c *gin.Context) {
+        var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+        defer cancel()
+        var user models.User
+        var searchUser models.User
 
-		if err := c.BindJSON(&user); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		filter := bson.M{"email": user.Email}
-		err := userCollection.FindOne(ctx, filter).Decode(&searchUser)
-		defer cancel()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
-			return
-		}
+        if err := c.BindJSON(&user); err != nil {
+            c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+            return
+        }
+        filter := bson.M{"email": user.Email}
+        err := userCollection.FindOne(ctx, filter).Decode(&searchUser)
+        defer cancel()
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
+            return
+        }
 
-		isValid, msg := VerifyPassword(*searchUser.Password, *user.Password)
-		if isValid != true {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
-			return
-		}
-		if searchUser.Email == nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "email is not registered"})
-			return
-		}
-		token, refreshToken, _ := helper.GenerateAllTokens(*searchUser.Email, *searchUser.First_name, *searchUser.Last_name, searchUser.User_id)
-		helper.UpdateAllTokens(token, refreshToken, searchUser.User_id)
+        isValid, msg := VerifyPassword(*user.Password, *searchUser.Password)
+        if isValid != true {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
+            return
+        }
+        if searchUser.Email == nil {
+            c.JSON(http.StatusBadRequest, gin.H{"error": "email is not registered"})
+            return
+        }
+        token, refreshToken, _ := helper.GenerateTokens(*searchUser.First_name, *searchUser.Last_name, *searchUser.Email, searchUser.User_id)
+        helper.UpdateTokens(token, refreshToken, searchUser.User_id)
 
-		err = userCollection.FindOne(ctx, filter).Decode(&searchUser)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"token": token, "refresh_token": refreshToken, "user": searchUser})
-	}
+        err = userCollection.FindOne(ctx, filter).Decode(&searchUser)
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
+            return
+        }
+        c.JSON(http.StatusOK, gin.H{"token": token})
+    }
 }
