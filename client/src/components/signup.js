@@ -43,6 +43,14 @@ class Signup extends Component {
       .catch((err) => {
         console.log(err);
       });
+      
+    this.setState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    });
+
   };
 
   render() {

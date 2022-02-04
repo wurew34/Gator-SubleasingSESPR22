@@ -40,6 +40,12 @@ class Login extends Component {
       .catch((err) => {
         console.log(err);
       });
+
+    this.setState({
+      email: "",
+      password: "",
+    });
+    
   };
 
   render() {
@@ -88,7 +94,7 @@ class Login extends Component {
                     fullWidth
                     required
                     onChange={(e) => {
-                      this.setState({ email: e.target.value });
+                      this.setState({ password: e.target.value });
                     }}
                   />
                 </Grid>
