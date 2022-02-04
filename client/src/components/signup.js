@@ -36,7 +36,7 @@ class Signup extends Component {
       password: this.state.password,
     };
     axios
-      .post(endpoint + "api/users/signup", newUser) 
+      .post(endpoint + "/api/users/signup", newUser) 
       .then((res) => {
         console.log(res.data);
       })
