@@ -12,7 +12,14 @@ import (
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		clientToken := c.Request.Header.Get("token")
+		// clientToken1 := c.Request.Header.Get("token")
+		// //check the authorization header
+		// fmt.Println("clientToken: ", clientToken1, "clientToken: ", clientToken)
+		// clientToken3:=c.Request.Header.Get("Authorization")
+		// fmt.Println("clientToken3: ", clientToken3)
+		const BEARER_SCHEMA = "Bearer "
+		authHeader := c.GetHeader("Authorization")
+		clientToken := authHeader[len(BEARER_SCHEMA):]
 
 		if clientToken == "" {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("No Auhorization header provided")})

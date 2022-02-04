@@ -10,7 +10,16 @@ import (
 func main() {
 	r := gin.New()
 	r.Use(gin.Logger())
-	r.Use(cors.Default())
+	corsConfig := cors.Config{
+		AllowAllOrigins:  false,
+		AllowCredentials: true,
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "accept", "token"},
+	}
+
+	//used cors.Default() before
+	r.Use(cors.New(corsConfig))
 	routes.AuthRoute(r)
 	routes.UserRoute(r)
 	r.Run("localhost:8080")
