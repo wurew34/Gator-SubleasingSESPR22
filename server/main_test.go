@@ -28,10 +28,12 @@ func Test_SignUp(t *testing.T) {
 	r := gin.Default()
 	a := assert.New(t)
 	r.POST("/users/signup", controller.CreateUser())
+	// Test User for SignUp
 	email := "test@test3.com"
 	password := "test1234"
 	first_name := "test"
 	last_name := "user"
+
 	test_user := models.User{
 		Email:      &email,
 		Password:   &password,
@@ -41,12 +43,16 @@ func Test_SignUp(t *testing.T) {
 	reqBody, _ := json.Marshal(test_user)
 
 	req, _ := http.NewRequest(http.MethodPost, "/users/signup", bytes.NewBuffer(reqBody))
-	w := httptest.NewRecorder()
 
+	w := httptest.NewRecorder()
 	req.Header.Set("Content-Type", "application/json")
 	r.ServeHTTP(w, req)
+
+	// Check the status code is what we expect.
 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+
+	// Test User is dropped after test
 	drop_User(test_user)
 
 }
