@@ -45,8 +45,9 @@ func CreateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		//allow all origins
-		c.Header("Content-Type", "application/json")
-		c.Header("Access-Control-Allow-Origin", "*")
+		// c.Header("Content-Type", "application/json")
+		// c.Header("Access-Control-Allow-Origin", "*")
+		// c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
 
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -113,6 +114,7 @@ func LoginUser() gin.HandlerFunc {
             return
         }
         filter := bson.M{"email": user.Email}
+		fmt.Print(user.Email)
         err := userCollection.FindOne(ctx, filter).Decode(&searchUser)
         defer cancel()
         if err != nil {
