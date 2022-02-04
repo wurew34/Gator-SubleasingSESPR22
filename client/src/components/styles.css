@@ -3,9 +3,10 @@ img {
 }
 
 h2 {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
   color: #000;
+  margin: 15px;
 }
 
 a {
