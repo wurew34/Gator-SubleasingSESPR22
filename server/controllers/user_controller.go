@@ -135,36 +135,17 @@ func LoginUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
 			return
 		}
-
-		c.SetCookie(
-			"token",
-			token,
-			3600,
-			"",
-			"",
-			false,
-			true,
-		)
-
-		c.JSON(http.StatusOK, gin.H{"token": token, "refresh_token": refreshToken, "user": searchUser})
+		c.JSON(http.StatusOK, gin.H{"token": token})
 	}
 }
 
 func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
-		cookie, cookie_err := c.Cookie("token")
-		if cookie == "" || cookie_err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		userId, exists := c.Get("uid")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "user is not authenticated"})
 			return
 		}
-		token, msg := helper.ValidateToken(cookie)
-		if msg != "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"authentication error": "user is not authenticated"})
-			return
-		}
-
-		userId := token.Uid
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var user models.User
@@ -177,18 +158,45 @@ func GetUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, user)
 	}
 }
-func GetUserById() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		userId := c.Param("userId")
-		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
-		defer cancel()
-		var user models.User
-		filter := bson.M{"user_id": userId}
-		err := userCollection.FindOne(ctx, filter).Decode(&user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
-			return
-		}
-		c.JSON(http.StatusOK, user)
-	}
-}
+// func GetUserById() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		userId := c.Param("userId")
+// 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+// 		defer cancel()
+// 		var user models.User
+// 		filter := bson.M{"user_id": userId}
+// 		err := userCollection.FindOne(ctx, filter).Decode(&user)
+// 		if err != nil {
+// 			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
+// 			return
+// 		}
+// 		c.JSON(http.StatusOK, user)
+// 	}
+// }
+
+// c.SetCookie(
+// 	"token",
+// 	token,
+// 	3600,
+// 	"",
+// 	"",
+// 	false,
+// 	true,
+// )
+
+// cookie, cookie_err := c.Cookie("token")
+// fmt.Print(c.Request.Header.Get("email"))
+// fmt.Print(c.Request.Header.Get("token"))
+// fmt.Print(c.Get("email"))
+
+// if cookie == "" || cookie_err != nil {
+// 	c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+// 	return
+// }
+// token, msg := helper.ValidateToken(cookie)
+// if msg != "" {
+// 	c.JSON(http.StatusUnauthorized, gin.H{"authentication error": "user is not authenticated"})
+// 	return
+// }
+
+// userId := token.Uid
