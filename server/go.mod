@@ -4,7 +4,12 @@ go 1.17
 
 require github.com/gin-gonic/gin v1.7.7
 
-require github.com/rs/cors v1.8.1 // indirect
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/rs/cors v1.8.1 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+)
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -26,6 +31,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rs/cors/wrapper/gin v0.0.0-20211222042454-bf1dbac76afe
+	github.com/stretchr/testify v1.7.0
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.0 // indirect
