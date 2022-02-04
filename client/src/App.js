@@ -9,14 +9,12 @@ import Button from "@mui/material/Button";
 import logo from "./components/Images/container logo.PNG";
 import Main from "./main";
 import { createTheme } from "@mui/system";
-import ParticleBackground from "./ParticleBackground";
 
 function App() {
   return (
     <div className="heading">
-      <ParticleBackground />
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" style={{ background: "#00529B" }}>
+        <AppBar id="app-bar" style={{ background: "#00529B" }}>
           <Toolbar>
             <Box sx={{ flexGrow: 1 }}>
               <a href="/">

@@ -4,6 +4,7 @@ import logo from "./Images/container logo.PNG";
 import "./styles.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import ParticleBackground  from '../ParticleBackground'
 import axios from "axios";
 
 let endpoint = "http://localhost:8080";
@@ -49,26 +50,28 @@ class Signup extends Component {
       padding: 20,
       height: "70vh",
       width: 500,
-      margin: "20px  auto",
+      margin: "100px  auto",
+      borderRadius: '25px'
     };
     const theme = createTheme({
       palette: {
         background: {
-          default: "#FA8627",
+          default: "#163766",
         },
       },
     });
     return (
       <ThemeProvider theme={theme}>
+        <ParticleBackground/>
         <CssBaseline />
         <Grid>
-          <Paper elevation={10} style={paperStyle}>
+          <Paper elevation={24} style={paperStyle}>
             <Grid align="center">
               <img src={logo} alt="My logo" />
               <h2>Sign Up</h2>
             </Grid>
             <form onSubmit={this.onSubmit}>
-              <Grid container direction={"column"} spacing={3}>
+              <Grid container direction={"column"} spacing={2}>
                 <Grid item>
                   <TextField
                     label="Enter First Name"

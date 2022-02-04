@@ -4,23 +4,24 @@ import logo from'./Images/container logo.PNG';
 import './styles.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link } from "react-router-dom";
+import ParticleBackground  from '../ParticleBackground'
 
 class Login extends Component {
     render() {
-      const paperStyle = {padding:20, height:'70vh', width:500, margin:"20px  auto"}
+      const paperStyle = {padding:60, height:'70vh', width:500, margin:"100px  auto", borderRadius: '25px'}
       const theme = createTheme({
         palette: {
           background: {
-            default: "#FA8627",
+            default: "#163766",
           } 
         },
       });
         return(
           <ThemeProvider theme={theme}>
+            <ParticleBackground/>
              <CssBaseline/>
             <Grid>
-              <Paper elevation={10} style={paperStyle}>
+              <Paper elevation={24} style={paperStyle}>
                 <Grid align='center'>
                   <img src={logo} alt="My logo"/>
                   <h2>Sign in</h2>
