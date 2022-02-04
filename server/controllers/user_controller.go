@@ -115,3 +115,43 @@ func GetUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, user)
 	}
 }
+
+func LoginUser() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		var user models.User
+		var searchUser models.User
+
+		if err := c.BindJSON(&user); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		filter := bson.M{"email": user.Email}
+		err := userCollection.FindOne(ctx, filter).Decode(&searchUser)
+		defer cancel()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
+			return
+		}
+
+		isValid, msg := VerifyPassword(*searchUser.Password, *user.Password)
+		if isValid != true {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
+			return
+		}
+		if searchUser.Email == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "email is not registered"})
+			return
+		}
+		token, refreshToken, _ := helper.GenerateAllTokens(*searchUser.Email, *searchUser.First_name, *searchUser.Last_name, searchUser.User_id)
+		helper.UpdateAllTokens(token, refreshToken, searchUser.User_id)
+
+		err = userCollection.FindOne(ctx, filter).Decode(&searchUser)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while getting user"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"token": token, "refresh_token": refreshToken, "user": searchUser})
+	}
+}
