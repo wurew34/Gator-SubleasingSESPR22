@@ -17,9 +17,9 @@ import (
 )
 
 type SignedDetails struct {
-	Email      string
 	First_name string
 	Last_name  string
+	Email      string
 	Uid        string
 	jwt.StandardClaims
 }
@@ -28,11 +28,11 @@ var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users"
 
 var SECRET_KEY = os.Getenv("SECRET_KEY")
 
-func GenerateAllTokens(email string, firstName string, lastName string, uid string) (signedToken string, signedRefreshToken string, err error) {
+func GenerateTokens(firstName string, lastName string, email string, uid string) (signedToken string, signedRefreshToken string, err error) {
 	claims := &SignedDetails{
-		Email:      email,
 		First_name: firstName,
 		Last_name:  lastName,
+		Email:      email,
 		Uid:        uid,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(24)).Unix(),
@@ -57,7 +57,6 @@ func GenerateAllTokens(email string, firstName string, lastName string, uid stri
 
 }
 
-//!TODO look up more on this
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	token, err := jwt.ParseWithClaims(
 		signedToken,
@@ -87,7 +86,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 
 }
 
-func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string) {
+func UpdateTokens(signedToken string, signedRefreshToken string, userId string) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 	var updateObj primitive.D
