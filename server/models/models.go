@@ -28,7 +28,7 @@ type Location struct {
 type Lease struct {
 	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	User_id     string             `json:"user_id,omitempty"`
-	// Property_id string             `json:"property_id,omitempty" validate:"required"`
+	Lease_id string                `json:"lease_id,omitempty"`
 	Bedrooms    int                `json:"bedrooms,omitempty" validate:"required"`
 	Bathrooms   int                `json:"bathrooms,omitempty" validate:"required"`
 	// Location    Location           `json:"location,omitempty" validate:"required"`
