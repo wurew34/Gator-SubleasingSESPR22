@@ -26,11 +26,31 @@ const Dashboard = (props) => {
       })
       .then((res) => {
         console.log(res.data);
+        setFirstName(res.data.First_name);
+        setLastName(res.data.Last_name);
+        setEmail(res.data.Email);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const updateUser = () => {
+    axios
+      .put(endpoint + "/api/user", {
+        First_name: firstName,
+        Last_name: lastName,
+        Email: email,
+      })
+      .then((res) => {
+        console.log(res);
+        fetchUser();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
 
   const displayUser = () => {
     fetchUser();

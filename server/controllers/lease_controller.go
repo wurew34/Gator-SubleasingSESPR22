@@ -16,9 +16,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	//import gridfs
+	// "go.mongodb.org/mongo-driver/mongo/gridfs"
 )
 
 var leaseCollection *mongo.Collection = configs.GetCollection(configs.DB, "leases")
+// bucket, err := gridfs.NewBucket(configs.DB.Database(
+// 	"gatorSubleasing").GridFS("fs"))
+// )))
 
 func CreateLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -206,3 +211,43 @@ func GetLeaseById() gin.HandlerFunc {
 		c.JSON(http.StatusOK, lease)
 	}
 }
+
+// func GetLeaseByPage () gin.HandlerFunc{
+// 	return func(c *gin.Context) {
+// 		//create pagination
+// 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+// 		defer cancel()
+// 		var leases []bson.M
+// 		var total int64
+// 		var page int64
+// 		var limit int64
+
+// 		if page, err := strconv.ParseInt(c.Query("page"), 10, 64); err != nil {
+// 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 			return
+// 		} else {
+// 			page = page - 1
+// 		}
+
+// 		if limit, err := strconv.ParseInt(c.Query("limit"), 10, 64); err != nil {
+// 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 			return
+// 		} else {
+// 			limit = limit
+// 		}
+
+// 		if err := leaseCollection.Find(ctx, bson.M{}).Count(ctx, &total); err != nil {
+// 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 			return
+// 		}
+
+// 		if err := leaseCollection.Find(ctx, bson.M{}).Skip(int64(page * limit)).Limit(limit).All(ctx, &leases); err != nil {
+// 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 			return
+// 		}
+
+// 		c.JSON(http.StatusOK, gin.H{"total": total, "leases": leases})
+
+
+// 	}
+// }
