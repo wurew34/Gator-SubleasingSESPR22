@@ -13,23 +13,6 @@ import { createTheme } from "@mui/system";
 function App() {
   return (
     <div className="heading">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar id="app-bar" style={{ background: "#00529B" }}>
-          <Toolbar>
-            <Box sx={{ flexGrow: 1 }}>
-              <a href="/">
-                <img src={logo} alt="logo" />
-              </a>
-            </Box>
-            <Link to="/login">
-              <Button color="primary" variant="raised">
-                Log-in
-              </Button>
-            </Link>
-          </Toolbar>
-        </AppBar>
-      </Box>
-
       <Layout>
         <Content>
           <div className="page-content" />
