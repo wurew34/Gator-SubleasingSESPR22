@@ -54,6 +54,7 @@ func CreateLease() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
 			return
 		}
+		lease.Lease_id = lease.ID.Hex()
 		lease.User_id = userId.(string)
 		lease.Created_at = time.Now()
 		lease.Updated_at = time.Now()
@@ -78,6 +79,8 @@ func UpdateLease() gin.HandlerFunc {
 
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
+		givenLeaseId := c.Param("leaseId")
+
 		var lease models.Lease
 
 		if err := c.BindJSON(&lease); err != nil {
@@ -95,10 +98,20 @@ func UpdateLease() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
 			return
 		}
+		if lease.User_id != userId.(string) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not match"})
+			return
+		}
+		if lease.Lease_id != givenLeaseId {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "lease id not match"})
+			return
+		}
+
+		// lease.ID = lease.Lease_id.(primitive.ObjectID)
 		lease.User_id = userId.(string)
 		lease.Updated_at = time.Now()
 
-		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"_id": lease.ID}, bson.M{"$set": lease}); err != nil {
+		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"lease_id": lease.Lease_id}, bson.M{"$set": lease}); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -111,14 +124,14 @@ func UpdateLease() gin.HandlerFunc {
 func DeleteLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//delete lease
-		param := c.Param("leaseId")
+		leaseId := c.Param("leaseId")
 		// convert param to ObjectId
-		leaseId, err := primitive.ObjectIDFromHex(param)
+		// leaseId, err := primitive.ObjectIDFromHex(param)
 		// leaseId := primitive.ObjectID(param)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
+		// if err != nil {
+		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		// 	return
+		// }
 
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
@@ -142,7 +155,7 @@ func DeleteLease() gin.HandlerFunc {
 		// lease.User_id = userId.(string)
 		// lease.Updated_at = time.Now()
 
-		if _, err := leaseCollection.DeleteOne(ctx, bson.M{"_id": leaseId}); err != nil {
+		if _, err := leaseCollection.DeleteOne(ctx, bson.M{"lease_id": leaseId}); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -181,7 +194,7 @@ func GetLeases() gin.HandlerFunc {
 		// if err := leaseCollection.Find(ctx, bson.M{}).All(ctx, &leases); err != nil {
 		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		// 	return
-		// }
+		// }z
 
 		c.JSON(http.StatusOK, leases)
 	}
