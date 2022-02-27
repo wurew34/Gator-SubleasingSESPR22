@@ -139,7 +139,6 @@ const theme = createTheme({
 const Dashboard = () => {
   const classes = useStyles();
   let navigate = useNavigate();
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
