@@ -1,6 +1,12 @@
 import Image from "./Images/uf.jpg";
 import { makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { Link } from "react-router-dom";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import logo from "./Images/container logo.PNG";
 import { fontFamily, margin } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +31,22 @@ const Landing = () => {
         return(<div>
         <div className={classes.root}>
             <CssBaseline/>
+        <Box sx={{ flexGrow: 1 }}>
+        <AppBar id="app-bar" style={{ background: "#00529B" }}>
+          <Toolbar>
+            <Box sx={{ flexGrow: 1 }}>
+              <a href="/">
+                <img src={logo} alt="logo" />
+              </a>
+            </Box>
+            <Link to="/login">
+              <Button color="primary" variant="raised">
+                Log-in
+              </Button>
+            </Link>
+          </Toolbar>
+        </AppBar>
+      </Box>
             <h1 className={classes.title}>Welcome to Gator Subleasing!</h1>
         </div>
         <div className="about-text">
