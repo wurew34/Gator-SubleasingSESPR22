@@ -194,7 +194,7 @@ func DeleteLease() gin.HandlerFunc {
 	}
 }
 
-func GetLeases() gin.HandlerFunc {
+func GetAllLeases() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//get all leases
 		//allow all origins
@@ -255,7 +255,7 @@ func GetLeaseById() gin.HandlerFunc {
 	}
 }
 
-func GetLeaseByPage() gin.HandlerFunc {
+func GetLeases() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
@@ -283,6 +283,47 @@ func GetLeaseByPage() gin.HandlerFunc {
 				},
 			}
 
+		}
+		//search by bathroom and bedroom
+		if bath := c.Query("bath"); bath != "" {
+			bathInt, err := strconv.Atoi(bath)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
+
+			filter = bson.M{
+				"$and": []bson.M{
+					filter,
+					{
+						"bathrooms": bson.M{
+							//greater than or equal to
+							"$gte": bathInt,
+						},
+					},
+				},
+			}
+		}
+
+		if bed := c.Query("bed"); bed != "" {
+			//convert to int
+			bedInt, err := strconv.Atoi(bed)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
+
+			filter = bson.M{
+				"$and": []bson.M{
+					filter,
+					{
+						"bedrooms": bson.M{
+							// type of bed is int
+							"$gte": bedInt,
+						},
+					},
+				},
+			}
 		}
 
 		fmt.Printf("filter: %v\n", filter)
