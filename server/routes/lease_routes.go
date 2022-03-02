@@ -13,5 +13,6 @@ func LeaseRoute (router *gin.Engine) {
 	router.PUT("/api/lease/:leaseId", middleware.Authentication(),controller.UpdateLease())
 	router.DELETE("/api/lease/:leaseId", middleware.Authentication(),controller.DeleteLease())
 	router.GET("/api/lease/:leaseId", controller.GetLeaseById())
+	router.GET("/api/lease/all", controller.GetLeaseByPage())
 	// router.POST("/api/lease/:leaseId/upload", middleware.Authentication(), controller.UploadImages())
 }
