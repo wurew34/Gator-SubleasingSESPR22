@@ -93,7 +93,7 @@ import SubleaseInfo from "./Lease/subleaseInfo";
 const useStyles = makeStyles((theme) => ({
   container: {
     paddingLeft: "50px",
-    paddingRight: "50px"
+    paddingRight: "50px",
   },
 }));
 
@@ -117,7 +117,6 @@ const useStyles = makeStyles((theme) => ({
 //   );
 // };
 
-
 const theme = createTheme({
   palette: {
     background: {
@@ -129,27 +128,33 @@ const theme = createTheme({
 const Dashboard = () => {
   const classes = useStyles();
   let navigate = useNavigate();
- 
+
   const [subleases, setSublease] = useState([]);
   const [page, setPage] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(5);
+  const [search, setSearchQuery] = useState("");
 
   const fetchSublease = async () => {
     try {
+      console.log(search);
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
       const { data } = await axios.get(
-        `http://localhost:8080/api/lease?page=${page}`
+        `http://localhost:8080/api/lease?page=${page}&s=${search}`
       );
-      setSublease(data?.results);
-      setNumberOfPages(data?.total);
-      axios.defaults.headers.common["token"] = localStorage.getItem("token");
-    } catch(error) {
+      setSublease(data?.leases);
+      setNumberOfPages(data?.last_page);
+      console.log(data);
+      console.log(data.last_page);
+    } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
     fetchSublease();
-  },);
+  }, [page, search]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -160,9 +165,9 @@ const Dashboard = () => {
               <a href="/">
                 <img src={logo} alt="logo" />
               </a>
-            </Box>
+            </Box>  
             <Box sx={{ flexGrow: 4 }}>
-              <Search />
+              <Search setQuery={(search) => setSearchQuery(search)} />
             </Box>
             <Tooltip title="Profile">
               <IconButton
@@ -195,14 +200,21 @@ const Dashboard = () => {
           paddingRight: 4,
         }}
       >
-        <Grid container spacing={10} direction="row" justify="center" alignItems="center" className={classes.container}>
-          {subleases?.map(sublease => (
+        <Grid
+          container
+          spacing={10}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          className={classes.container}
+        >
+          {subleases?.map((sublease) => (
             <Grid item md={5}>
               <SubleaseInfo sublease={sublease} />
-              </Grid>
+            </Grid>
           ))}
         </Grid>
-        <AppPagination setPage={setPage} pageNumber={numberOfPages}/>
+        <AppPagination setPage={setPage} pageNumber={numberOfPages} />
       </Paper>
     </ThemeProvider>
   );
