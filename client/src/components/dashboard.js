@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Card,
@@ -14,14 +14,13 @@ import {
   CssBaseline,
   IconButton,
   Tooltip,
+  CardMedia,
 } from "@mui/material";
 import logo from "./Images/container logo.PNG";
 import mockImage from "./Images/Initial Logo.PNG";
 import "./styles.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowFowardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
@@ -30,7 +29,8 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Search from "./search";
 import { makeStyles } from "@mui/styles";
-import Image from "./Images/uf.jpg";
+import AppPagination from "./pagination";
+import SubleaseInfo from "./Lease/subleaseInfo";
 
 // let endpoint = "http://localhost:8080";
 
@@ -91,42 +91,32 @@ import Image from "./Images/uf.jpg";
 //   );
 // };
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minHeight: "100vh",
-    backgroundImage: `url(${Image})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-  },
   container: {
-    paddingTop: "10px",
-    paddingLeft: "300px",
-    paddingRight: "600px",
+    paddingLeft: "50px",
+    paddingRight: "50px"
   },
 }));
 
-const getSubleaseInfo = () => {
-  return (
-    <Grid item xs={3.9}>
-      <Card>
-        <CardContent>
-          {" "}
-          <img src={mockImage} alt="mock" />{" "}
-        </CardContent>
-      </Card>
-    </Grid>
-  );
-};
+// const getSubleaseInfo = () => {
+//   return (
+//     <Grid item xs={3.2}>
+//       <Card>
+//         <CardMedia
+//           style={{
+//             margin: "auto",
+//           }}>
+//           {" "}
+//           <img src={mockImage} alt="mock" />{" "}
+//         </CardMedia>
+//         <CardContent>
+//           <Typography>Location</Typography>
+//           <Typography>Price</Typography>
+//         </CardContent>
+//       </Card>
+//     </Grid>
+//   );
+// };
 
-const paperStyle = {
-  height: "80vh",
-  width: 1600,
-  margin: "300px  ",
-};
-
-const paginationStyle = {
-  padding: 65,
-  margin: "100px auto",
-};
 
 const theme = createTheme({
   palette: {
@@ -139,6 +129,27 @@ const theme = createTheme({
 const Dashboard = () => {
   const classes = useStyles();
   let navigate = useNavigate();
+ 
+  const [subleases, setSublease] = useState([]);
+  const [page, setPage] = useState(1);
+  const [numberOfPages, setNumberOfPages] = useState(5);
+
+  const fetchSublease = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8080/api/lease?page=${page}`
+      );
+      setSublease(data?.results);
+      setNumberOfPages(data?.total);
+      axios.defaults.headers.common["token"] = localStorage.getItem("token");
+    } catch(error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSublease();
+  },);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -178,33 +189,20 @@ const Dashboard = () => {
       <Paper
         elevation={5}
         sx={{
-          margin: 0,
           marginTop: 20,
           padding: 30,
           paddingLeft: 4,
           paddingRight: 4,
         }}
       >
-        <Grid container spacing={10} className={classes.container}>
-          {getSubleaseInfo()}
-          {getSubleaseInfo()}
-          {getSubleaseInfo()}
-          {getSubleaseInfo()}
-          {getSubleaseInfo()}
-          <Pagination
-            style={paginationStyle}
-            count={5}
-            renderItem={(item) => (
-              <PaginationItem
-                components={{
-                  previous: ArrowBackIcon,
-                  next: ArrowFowardIcon,
-                }}
-                {...item}
-              />
-            )}
-          ></Pagination>
+        <Grid container spacing={10} direction="row" justify="center" alignItems="center" className={classes.container}>
+          {subleases?.map(sublease => (
+            <Grid item md={5}>
+              <SubleaseInfo sublease={sublease} />
+              </Grid>
+          ))}
         </Grid>
+        <AppPagination setPage={setPage} pageNumber={numberOfPages}/>
       </Paper>
     </ThemeProvider>
   );
