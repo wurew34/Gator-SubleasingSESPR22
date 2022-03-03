@@ -155,35 +155,8 @@ func DeleteLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//delete lease
 		leaseId := c.Param("leaseId")
-		// convert param to ObjectId
-		// leaseId, err := primitive.ObjectIDFromHex(param)
-		// leaseId := primitive.ObjectID(param)
-		// if err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
-		// var lease models.Lease
-
-		// if err := c.BindJSON(&lease); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
-		// if err := validate.Struct(lease); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
-		// userId, exists := c.Get("uid")
-		// if !exists {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
-		// 	return
-		// }
-		// lease.User_id = userId.(string)
-		// lease.Updated_at = time.Now()
 
 		if _, err := leaseCollection.DeleteOne(ctx, bson.M{"lease_id": leaseId}); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -338,7 +311,15 @@ func GetLeases() gin.HandlerFunc {
 				findOptions.SetSort(bson.D{{"created_at", 1}})
 			} else if sort == "price_desc" {
 				findOptions.SetSort(bson.D{{"price", -1}})
+			} else if sort == "term_asc" {
+				findOptions.SetSort(bson.D{{"term", 1}})
+			} else if sort == "term_desc" {
+				findOptions.SetSort(bson.D{{"term", -1}})
+			} else {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "invalid sort"})
+				return
 			}
+			
 		}
 
 		page, err := strconv.Atoi(c.Query("page"))

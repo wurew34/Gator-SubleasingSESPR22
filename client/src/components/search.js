@@ -26,19 +26,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = (props) => {
+const Search = ({setSearchQuery}) => {
   const classes = useStyles();
+  const [search, setSearch] = React.useState("");
   return (
     <div className={classes.search}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
+      <form onSubmit={(e) => {setSearchQuery(search)}}>
+
+
       <InputBase
         placeholder="Search for properties..."
         fullWidth
         required
         className={classes.input}
+        onChange={(e) => setSearch(e.target.value)}
       />
+      </form >
     </div>
   );
 };
