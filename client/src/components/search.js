@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
   },
   searchIcon: {
-    height: "100%",
+    height: "85%",
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
@@ -26,27 +26,34 @@ const useStyles = makeStyles((theme) => ({
   input: {
     paddingLeft: 30,
   },
+  searchButton: {
+    display: "flex",
+  },
 }));
 
 const Search = (props) => {
   const classes = useStyles();
   const [localSearch, setLocalSearch] = useState("");
   return (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
-        <SearchIcon />
+    <div className={classes.searchButton}>
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <SearchIcon />
+        </div>
+        <InputBase
+          placeholder="Search for properties..."
+          fullWidth
+          required
+          className={classes.input}
+          onChange={(e) => {
+            e.preventDefault();
+            setLocalSearch(e.target.value);
+          }}
+        />
       </div>
-      <InputBase
-        placeholder="Search for properties..."
-        fullWidth
-        required
-        className={classes.input}
-        onChange={(e) => {
-          e.preventDefault();
-          setLocalSearch(e.target.value);
-        }}
-      />
       <Button
+        variant="contained"
+        className={classes.searchStyle}
         onClick={() => {
           props.setQuery(localSearch);
         }}
