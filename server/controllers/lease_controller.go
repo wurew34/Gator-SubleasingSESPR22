@@ -31,42 +31,9 @@ var leaseCollection *mongo.Collection = configs.GetCollection(configs.DB, "lease
 func CreateLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		//allow all origins
-		// c.Header("Content-Type", "application/json")
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var lease models.Lease
-		// upload images to gridfs
-		// lease.Images = []string{"test.jpg"}
-		// fileName := c.Param("fileName")
-		// file, _, err := c.Request.FormFile("file")
-
-		// bucket, err := gridfs.NewBucket(
-		// 	configs.DB.Database("gatorSubleasing"),
-		// )
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// uploadStream, err := bucket.OpenUploadStream(fileName)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// defer uploadStream.Close()
-		// // upload the image file
-
-		// if _, err := io.Copy(uploadStream, file); err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// lease.Images = []string{fileName}
-		// // lease.Images = append(lease.Images, fileName)
-		// lease.Images = append(lease.Images, fileName)
 
 		if err := c.BindJSON(&lease); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -100,13 +67,6 @@ func CreateLease() gin.HandlerFunc {
 
 func UpdateLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//update lease
-		//allow all origins
-		// c.Header("Content-Type", "application/json")
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		givenLeaseId := c.Param("leaseId")
@@ -137,7 +97,6 @@ func UpdateLease() gin.HandlerFunc {
 			return
 		}
 
-		// lease.ID = lease.Lease_id.(primitive.ObjectID)
 		lease.User_id = userId.(string)
 		lease.Updated_at = time.Now()
 
@@ -169,13 +128,6 @@ func DeleteLease() gin.HandlerFunc {
 
 func GetAllLeases() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//get all leases
-		//allow all origins
-		// c.Header("Content-Type", "application/json")
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var leases []bson.M
@@ -193,12 +145,6 @@ func GetAllLeases() gin.HandlerFunc {
 		}
 
 		fmt.Println(leases)
-
-		// if err := leaseCollection.Find(ctx, bson.M{}).All(ctx, &leases); err != nil {
-		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		// 	return
-		// }z
-
 		c.JSON(http.StatusOK, leases)
 	}
 }
@@ -211,9 +157,8 @@ func GetLeaseById() gin.HandlerFunc {
 		var lease models.Lease
 
 		param := c.Param("leaseId")
-		// convert param to ObjectId
 		leaseId, err := primitive.ObjectIDFromHex(param)
-		// leaseId := primitive.ObjectID(param)
+
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
