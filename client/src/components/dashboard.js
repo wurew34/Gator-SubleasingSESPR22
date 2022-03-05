@@ -165,9 +165,9 @@ const Dashboard = () => {
               <a href="/">
                 <img src={logo} alt="logo" />
               </a>
-            </Box>
+            </Box>  
             <Box sx={{ flexGrow: 4 }}>
-              <Search setSearchQuery={setSearchQuery} />
+              <Search setQuery={(search) => setSearchQuery(search)} />
             </Box>
             <Tooltip title="Profile">
               <IconButton

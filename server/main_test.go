@@ -9,7 +9,6 @@ import (
 	"net/http/httptest"
 	"testing"
 	"time"
-	"os"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/wurew34/Gator-SubleasingSESPR22/configs"
@@ -23,39 +22,6 @@ import (
 
 
 var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
-
-func init_test_user() {
-	// Test User for SignUp
-	r := gin.Default()
-	email := "test@test.com"
-	password := "test1234"
-	first_name := "test"
-	last_name := "user"
-
-
-	test_user := models.User{	
-		Email:      &email,
-		Password:   &password,
-		First_name: &first_name,
-		Last_name:  &last_name,
-	}
-	reqBody, _ := json.Marshal(test_user)
-
-	req, _ := http.NewRequest(http.MethodPost, "api/users/signup", bytes.NewBuffer(reqBody))
-
-	w := httptest.NewRecorder()
-	req.Header.Set("Content-Type", "application/json")
-	r.ServeHTTP(w, req)
-}
-
-
-func TestMain(m *testing.M) {
-	// Run the tests
-	// run all tests
-	
-
-	os.Exit(m.Run())
-}
 
 func Test_SignUp(t *testing.T) {
 

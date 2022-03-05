@@ -1,7 +1,9 @@
+import React from "react";
+import { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { collapseClasses, InputBase } from "@mui/material";
+import { Button, InputBase } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -26,25 +28,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = ({setSearchQuery}) => {
+const Search = (props) => {
   const classes = useStyles();
-  const [search, setSearch] = React.useState("");
+  const [localSearch, setLocalSearch] = useState("");
   return (
     <div className={classes.search}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
-      <form onSubmit={(e) => {setSearchQuery(search)}}>
-
-
       <InputBase
         placeholder="Search for properties..."
         fullWidth
         required
         className={classes.input}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          e.preventDefault();
+          setLocalSearch(e.target.value);
+        }}
       />
-      </form >
+      <Button
+        onClick={() => {
+          props.setQuery(localSearch);
+        }}
+      >
+        SEARCH
+      </Button>
     </div>
   );
 };
