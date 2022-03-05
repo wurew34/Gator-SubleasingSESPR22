@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 	"time"
 
@@ -23,7 +24,35 @@ import (
 
 var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
 
+func init_test_user() {
+	// Test User for SignUp
+	r := gin.Default()
+	email := "test@test.com"
+	password := "test1234"
+	first_name := "test"
+	last_name := "user"
 
+	test_user := models.User{
+		Email:      &email,
+		Password:   &password,
+		First_name: &first_name,
+		Last_name:  &last_name,
+	}
+	reqBody, _ := json.Marshal(test_user)
+
+	req, _ := http.NewRequest(http.MethodPost, "api/users/signup", bytes.NewBuffer(reqBody))
+
+	w := httptest.NewRecorder()
+	req.Header.Set("Content-Type", "application/json")
+	r.ServeHTTP(w, req)
+}
+
+func TestMain(m *testing.M) {
+	// Run the tests
+	// run all tests
+
+	os.Exit(m.Run())
+}
 
 func Test_SignUp(t *testing.T) {
 
@@ -35,13 +64,14 @@ func Test_SignUp(t *testing.T) {
 	password := "test1234"
 	first_name := "test"
 	last_name := "user"
-
 	test_user1 := models.User{
 		Email:      &email,
 		Password:   &password,
 		First_name: &first_name,
 		Last_name:  &last_name,
 	}
+	drop_User(test_user1)
+
 	reqBody, _ := json.Marshal(test_user1)
 
 	req, _ := http.NewRequest(http.MethodPost, "/api/users/signup", bytes.NewBuffer(reqBody))
@@ -51,7 +81,36 @@ func Test_SignUp(t *testing.T) {
 	r.ServeHTTP(w, req)
 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
-	drop_User(test_user1)
+	// drop_User(test_user1)
+}
+
+func Test_Login(t *testing.T) {
+
+	r := gin.Default()
+	a := assert.New(t)
+	r.POST("/api/users/login", controller.LoginUser())
+
+	// Test User for Login
+	email := "test@test.com"
+	password := "test1234"
+
+	test_user1 := models.User{
+		Email:    &email,
+		Password: &password,
+	}
+
+	// init_test_user()
+
+	reqBody, _ := json.Marshal(test_user1)
+
+	req, _ := http.NewRequest(http.MethodPost, "/api/users/login", bytes.NewBuffer(reqBody))
+
+	w := httptest.NewRecorder()
+	req.Header.Set("Content-Type", "application/json")
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+	// drop_User(test_user1)
 }
 
 func Test_InvalidSignUp(t *testing.T) {
@@ -65,6 +124,74 @@ func Test_InvalidSignUp(t *testing.T) {
 	password := ""
 	first_name := "t"
 	last_name := "us"
+
+	test_user := models.User{
+		Email:      &email,
+		Password:   &password,
+		First_name: &first_name,
+		Last_name:  &last_name,
+	}
+	reqBody, _ := json.Marshal(test_user)
+
+	req, _ := http.NewRequest(http.MethodPost, "/users/signup", bytes.NewBuffer(reqBody))
+
+	w := httptest.NewRecorder()
+	req.Header.Set("Content-Type", "application/json")
+	r.ServeHTTP(w, req)
+
+	// Check the status code is what we expect.
+	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
+	a.Equal(http.StatusNotFound, w.Code, "HTTP request status code error")
+
+	// Test User is dropped after test
+	drop_User(test_user)
+}
+
+func Test_InvalidEmail(t *testing.T) {
+
+	r := gin.Default()
+	a := assert.New(t)
+	r.POST("/api/users/signup", controller.CreateUser())
+
+	// Test User for SignUp
+	email := ""
+	password := "12345"
+	first_name := "jane"
+	last_name := "doe"
+
+	test_user := models.User{
+		Email:      &email,
+		Password:   &password,
+		First_name: &first_name,
+		Last_name:  &last_name,
+	}
+	reqBody, _ := json.Marshal(test_user)
+
+	req, _ := http.NewRequest(http.MethodPost, "/users/signup", bytes.NewBuffer(reqBody))
+
+	w := httptest.NewRecorder()
+	req.Header.Set("Content-Type", "application/json")
+	r.ServeHTTP(w, req)
+
+	// Check the status code is what we expect.
+	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
+	a.Equal(http.StatusNotFound, w.Code, "HTTP request status code error")
+
+	// Test User is dropped after test
+	drop_User(test_user)
+}
+
+func Test_InvalidPassword(t *testing.T) {
+
+	r := gin.Default()
+	a := assert.New(t)
+	r.POST("/api/users/signup", controller.CreateUser())
+
+	// Test User for SignUp
+	email := "test4@test.com"
+	password := ""
+	first_name := "john"
+	last_name := "doe"
 
 	test_user := models.User{
 		Email:      &email,
