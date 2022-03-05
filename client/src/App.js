@@ -1,28 +1,22 @@
 import React from "react";
-import './App.css';
-import { Layout, Header, Drawer, Content, Navigation} from "react-mdl";
+import "./App.css";
+import { Layout, Content } from "react-mdl";
 import { Link } from "react-router-dom";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import logo from "./components/Images/container logo.PNG";
 import Main from "./main";
+import { createTheme } from "@mui/system";
 
 function App() {
   return (
-    <div className = "heading">
+    <div className="heading">
       <Layout>
-        <Header title="Gator Subleasing" scroll>
-          <Navigation>
-            <Link to="/login">Log-In</Link>
-            <Link to="/aboutus">About Us</Link>
-          </Navigation>
-        </Header>
-        <Drawer>
-        <Navigation>
-            <Link to="/login">Log-In</Link>
-            <Link to="/aboutus">About Us</Link>
-          </Navigation>
-        </Drawer>
         <Content>
-          <div className='page-content' />
-          <Main/>
+          <div className="page-content" />
+          <Main />
         </Content>
       </Layout>
     </div>

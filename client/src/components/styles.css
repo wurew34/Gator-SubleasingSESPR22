@@ -1,0 +1,36 @@
+img {
+  border-radius: 15px;
+}
+
+h2 {
+  font-size: 25px;
+  font-weight: bold;
+  color: #000;
+  margin: 15px;
+}
+
+a {
+  text-align: center;
+}
+
+a:link {
+  color: white;
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  color: blue;
+}
+
+a:active {
+  color: blue;
+}
+
+#particle-js {
+  position: fixed;
+  z-index: -1;
+}

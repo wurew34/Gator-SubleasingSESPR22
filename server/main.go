@@ -1,43 +1,29 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"os"
-	"time"
+	"github.com/gin-gonic/gin"
+	"github.com/wurew34/Gator-SubleasingSESPR22/routes"
+
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	uri := getEnv("DB_URI")
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
-	if err != nil {
-		panic(err)
+	r := gin.New()
+	r.Use(gin.Logger())
+	corsConfig := cors.Config{
+		AllowAllOrigins:  false,
+		AllowCredentials: true,
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "accept", "token"},
 	}
-	defer client.Disconnect(ctx)
-	fmt.Println("Connected to MongoDB!")
-  
-	database := client.Database("quickstart")
-	userCollection := database.Collection("users")
 
-	userResult, err := userCollection.InsertOne(ctx, bson.M{"name": "John", "age": 30})
-	if err != nil {
-		panic(err)
-	}
-	userID := userResult.InsertedID.(primitive.ObjectID)
-	fmt.Println("Inserted user with ID: ", userID.Hex())
-
+	//used cors.Default() before
+	r.Use(cors.New(corsConfig))
+	routes.AuthRoute(r)
+	routes.UserRoute(r)
+	routes.LeaseRoute(r)
+	r.Run("localhost:8080")
 }
 
-func getEnv(key string) string {
-	err := godotenv.Load(".env")
-	if err != nil {
-		panic(err)
-	}
-	return os.Getenv(key)
-}
+//go build -o new -v -> go run main.go
