@@ -1,8 +1,11 @@
 # Sprint 2:
 
 ## REST API Documentation
+
 The Postman commands and sample examples can be viewed here : [https://documenter.getpostman.com/view/10332145/UVkvHsNy](https://documenter.getpostman.com/view/10332145/UVkvHsNy)
+
 ### User Endpoints
+
 ### 1. Register User:
 
 ##### Request
@@ -17,14 +20,14 @@ Sample Body:
 
 ```json
 {
-    "first_name": "Munish",
-    "last_name": "Tanwar",
-    "email": "munish@gmail.com",
-    "password": "thisisapassword"
+  "first_name": "Munish",
+  "last_name": "Tanwar",
+  "email": "munish@gmail.com",
+  "password": "thisisapassword"
 }
 ```
 
-Sample Response	:
+Sample Response :
 
 ```json
 {
@@ -32,9 +35,9 @@ Sample Response	:
 }
 ```
 
-### 2.	Login User:
+### 2. Login User:
 
-##### Request	
+##### Request
 
 Method: `POST`
 
@@ -46,13 +49,12 @@ Sample Body:
 
 ```json
 {
-    "email": "munish@gmail.com",
-    "password": "thisisapassword"
+  "email": "munish@gmail.com",
+  "password": "thisisapassword"
 }
-
 ```
 
-Sample Response	
+Sample Response
 
 ```json
 {
@@ -60,22 +62,21 @@ Sample Response
 }
 ```
 
+### 3. Get User:
 
-### 3.	Get User:
-
-##### Request	
+##### Request
 
 Method: `GET`
 
 ##### Target URL: `'http://localhost:8080/api/user'`
+
 ##### Header: `Authorization: Bearer {token}`
 
 ##### Example:
 
 Sample Body: N/A
 
-
-Sample Response	
+Sample Response
 
 ```json
 {
@@ -91,34 +92,35 @@ Sample Response
   "user_id": "6222a40efbc8be0ff18558aa"
 }
 ```
- 
-### Lease Endpoints
-### 1.	Create Lease:
 
-##### Request	
+### Lease Endpoints
+
+### 1. Create Lease:
+
+##### Request
 
 Method: `POST`
 
 ##### Target URL: `'http://localhost:8080/api/lease/create'`
+
 ##### Header: `Authorization: Bearer {token}`
 
-##### Example:	
+##### Example:
 
 Sample Body:
 
 ```json
 {
-    "bedrooms": 4,
-    "bathrooms": 4,
-    "description": "Near Walmart",
-    "title": "Niche",
-    "price": 584.0,
-    "term": 15
+  "bedrooms": 4,
+  "bathrooms": 4,
+  "description": "Near Walmart",
+  "title": "Niche",
+  "price": 584.0,
+  "term": 15
 }
-
 ```
 
-Sample Response	
+Sample Response
 
 ```json
 {
@@ -135,19 +137,21 @@ Sample Response
 }
 ```
 
-### 2.	Get Leases:
-##### Request	
+### 2. Get Leases:
+
+##### Request
 
 Method: `GET`
 
 ##### Target URL: `'http://localhost:8080/api/lease?page=1'`
+
 ##### Header: `Authorization: Bearer {token}`
 
-##### Example:	
+##### Example:
 
 Sample Body: N/A
 
-Sample Response	
+Sample Response
 
 ```json
 {
@@ -256,19 +260,21 @@ Sample Response
 }
 ```
 
-### 3.	Get Lease By ID:
-##### Request	
+### 3. Get Lease By ID:
+
+##### Request
 
 Method: `GET`
 
 ##### Target URL: `'http://localhost:8080/api/lease/6222a4d9fbc8be0ff18558ab'`
+
 ##### Header: `Authorization: Bearer {token}`
 
-##### Example:	
+##### Example:
 
 Sample Body: N/A
 
-Sample Response	
+Sample Response
 
 ```json
 {
@@ -285,35 +291,36 @@ Sample Response
 }
 ```
 
-### 4.	Update Lease:
-##### Request	
+### 4. Update Lease:
+
+##### Request
 
 Method: `PUT`
 
 ##### Target URL: `'http://localhost:8080/api/lease/6222a4d9fbc8be0ff18558ab'`
+
 ##### Header: `Authorization: Bearer {token}`
 
-##### Example:	
+##### Example:
 
 Sample Body:
 
 ```json
 {
-    "_id": "6222a4d9fbc8be0ff18558ab",
-    "lease_id": "6222a4d9fbc8be0ff18558ab",
-    "title": "Niche",
-    "bedrooms": 4,
-    "bathrooms": 4,
-    "description": "Near Walmart",
-    "price": 600,
-    "term": 6,
-    "created_at": "2022-03-04T18:46:33.9983003-05:00",
-    "updated_at": "2022-03-04T18:46:33.9983003-05:00"
+  "_id": "6222a4d9fbc8be0ff18558ab",
+  "lease_id": "6222a4d9fbc8be0ff18558ab",
+  "title": "Niche",
+  "bedrooms": 4,
+  "bathrooms": 4,
+  "description": "Near Walmart",
+  "price": 600,
+  "term": 6,
+  "created_at": "2022-03-04T18:46:33.9983003-05:00",
+  "updated_at": "2022-03-04T18:46:33.9983003-05:00"
 }
-
 ```
 
-Sample Response	
+Sample Response
 
 ```json
 {
@@ -330,22 +337,51 @@ Sample Response
 }
 ```
 
-### 5.	Delete Lease By ID:
-##### Request	
+### 5. Delete Lease By ID:
+
+##### Request
 
 Method: `DELETE`
 
 ##### Target URL: `'http://localhost:8080/api/lease/6222a4d9fbc8be0ff18558ab'`
+
 ##### Header: `Authorization: Bearer {token}`
 
-##### Example:	
+##### Example:
 
 Sample Body: NA
 
-Sample Response	
+Sample Response
 
 ```json
 {
   "message": "lease deleted"
 }
 ```
+
+# Front-End e2e and Unit Testing Documentation
+
+1. Included unit testing for sign-in and sign-up functionalities using Jest.
+2. Included Cypress e2e testing for landing page, login, signup, and dashboard components.
+
+## Testing Landing Page
+
+![chrome_abrP7oCN6a](https://user-images.githubusercontent.com/45046355/156868418-2e7f282d-976c-41eb-b46a-a8141dfe6813.png)
+
+## Testing Sign In
+
+![chrome_197Zi2XKYP](https://user-images.githubusercontent.com/45046355/156868410-a1f37db3-b2a5-49c5-a133-21ab217342a6.png)
+
+## Testing Sign Up
+
+![chrome_EeRauvXgon](https://user-images.githubusercontent.com/45046355/156868372-55c4d63e-aed3-4cc7-8030-ca36af5fcf22.png)
+
+## Testing Dashboard
+
+![IAFcD0vfZ4](https://user-images.githubusercontent.com/45046355/156868504-03b39d68-d597-409d-9a4b-65dd7102328d.gif)
+
+# Setup and running test scripts:
+
+- Jest unit testing: **npm test**
+
+- Cypress e2e testing: **npm run e2e**
