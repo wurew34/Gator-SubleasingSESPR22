@@ -26,20 +26,16 @@ type Location struct {
 
 //create a struct for Lease
 type Lease struct {
-	ID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	User_id   string             `json:"user_id,omitempty"`
-	Lease_id  string             `json:"lease_id,omitempty"`
-	Title    string             `json:"title,omitempty"`
-	Bedrooms  int                `json:"bedrooms,omitempty" validate:"required"`
-	Bathrooms int                `json:"bathrooms,omitempty" validate:"required"`
-	// Location    Location           `json:"location,omitempty" validate:"required"`
-	Description string  `json:"description,omitempty" validate:"required"`
-	Price       float64 `json:"price,omitempty" validate:"required"`
-	// Images      []string           `json:"images,omitempty" validate:"required"`
-	Term int `json:"term,omitempty" validate:"required"`
-	// Start_date  time.Time          `json:"start_date,omitempty" validate:"required"`
-	// End_date    time.Time          `json:"end_date,omitempty" validate:"required"`
-	Created_at time.Time `json:"created_at,omitempty"`
-	Updated_at time.Time `json:"updated_at,omitempty"`
-	Images     []string  `json:"images,omitempty"`
+	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	User_id     string             `json:"user_id,omitempty"`
+	Lease_id    string             `json:"lease_id,omitempty"`
+	Title       string             `json:"title,omitempty"`
+	Bedrooms    int                `json:"bedrooms,omitempty" validate:"required"`
+	Bathrooms   int                `json:"bathrooms,omitempty" validate:"required"`
+	Description string             `json:"description,omitempty" validate:"required"`
+	Price       float64            `json:"price,omitempty" validate:"required"`
+	Term        int                `json:"term,omitempty" validate:"required"`
+	Created_at  time.Time          `json:"created_at,omitempty"`
+	Updated_at  time.Time          `json:"updated_at,omitempty"`
+	Images      []string           `json:"images,omitempty"`
 }
