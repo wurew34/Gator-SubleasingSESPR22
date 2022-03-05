@@ -10,7 +10,6 @@ import (
 	"os"
 	"testing"
 	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/wurew34/Gator-SubleasingSESPR22/configs"
@@ -21,6 +20,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	// "go.mongodb.org/mongo-driver/mongo/options"?\
 )
+
 
 var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
 
@@ -54,6 +54,10 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+
+var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
+
+
 func Test_SignUp(t *testing.T) {
 
 	r := gin.Default()
@@ -82,6 +86,7 @@ func Test_SignUp(t *testing.T) {
 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
 	// drop_User(test_user1)
+
 }
 
 func Test_Login(t *testing.T) {
@@ -111,7 +116,66 @@ func Test_Login(t *testing.T) {
 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
 	// drop_User(test_user1)
+
 }
+
+
+
+func Test_Login(t *testing.T) {
+
+	r := gin.Default()
+	a := assert.New(t)
+	r.POST("/api/users/login", controller.LoginUser())
+
+	// Test User for Login
+	email := "test@test.com"
+	password := "test1234"
+
+	test_user1 := models.User{
+		Email:      &email,
+		Password:   &password,
+	}
+
+	// init_test_user()
+
+	reqBody, _ := json.Marshal(test_user1)
+
+	req, _ := http.NewRequest(http.MethodPost, "/api/users/login", bytes.NewBuffer(reqBody))
+
+	w := httptest.NewRecorder()
+	req.Header.Set("Content-Type", "application/json")
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+	// drop_User(test_user1)
+}
+
+// func Test_CreateLease(t *testing.T) {
+// 	r := gin.Default()
+// 	a := assert.New(t)
+// 	r.POST("/api/lease/create", controller.CreateLease())
+
+// 	lease := models.Lease{
+// 		Title: "test lease",
+// 		Description: "test lease description",
+// 		Price: 100,
+// 		Bedrooms: 2,
+// 		Bathrooms: 1,
+// 		Term: 12,
+// }
+
+// 	reqBody, _ := json.Marshal(lease)
+
+// 	req, _ := http.NewRequest(http.MethodPost, "/api/lease/create", bytes.NewBuffer(reqBody))
+
+// 	w := httptest.NewRecorder()
+// 	req.Header.Set("Content-Type", "application/json")
+// 	r.ServeHTTP(w, req)
+// 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
+// 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+// }
+
+
 
 func Test_InvalidSignUp(t *testing.T) {
 
@@ -223,3 +287,4 @@ func drop_User(testUser models.User) {
 		log.Fatal(err)
 	}
 }
+

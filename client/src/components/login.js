@@ -67,6 +67,7 @@ const Login = (props) => {
                 <TextField
                   label="E-mail Address"
                   placeholder="Enter E-mail Address"
+                  data-testid="email"
                   fullWidth
                   required
                   onChange={(e) => {
@@ -79,6 +80,7 @@ const Login = (props) => {
                   label="Password"
                   placeholder="Enter Password"
                   type="password"
+                  data-testid="password"
                   fullWidth
                   required
                   onChange={(e) => {
