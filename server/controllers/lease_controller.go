@@ -247,7 +247,44 @@ func GetLeases() gin.HandlerFunc {
 		fmt.Printf("filter: %v\n", filter)
 		fmt.Println("Searching for leases...")
 
+		//filter lease by location
+		if lat := c.Query("lat"); lat != "" {
+			latFloat, err := strconv.ParseFloat(lat, 64)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
+
+			if lng := c.Query("lng"); lng != "" {
+				lngFloat, err := strconv.ParseFloat(lng, 64)
+				if err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+
+				filter = bson.M{
+					"$and": []bson.M{
+						filter,
+						{
+							"location": bson.M{
+								"$near": bson.M{
+									"$geometry": bson.M{
+										"type":        "Point",
+										"coordinates": []float64{lngFloat, latFloat},
+									},
+									"$maxDistance": 5000,
+
+								},
+							},
+						},
+					},
+				}
+			}
+		}
+
 		if sort := c.Query("sort"); sort != "" {
+	
+			
 			if sort == "title" {
 				findOptions.SetSort(bson.D{{"title", 1}})
 			} else if sort == "price_asc" {

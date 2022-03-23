@@ -29,12 +29,14 @@ type Lease struct {
 	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	User_id     string             `json:"user_id,omitempty"`
 	Lease_id    string             `json:"lease_id,omitempty"`
-	Title       string             `json:"title,omitempty"`
-	Bedrooms    int                `json:"bedrooms,omitempty" validate:"required"`
-	Bathrooms   int                `json:"bathrooms,omitempty" validate:"required"`
+	Title       string             `json:"title,omitempty" validate:"required"`
 	Description string             `json:"description,omitempty" validate:"required"`
 	Price       float64            `json:"price,omitempty" validate:"required"`
 	Term        int                `json:"term,omitempty" validate:"required"`
+	Bedrooms    int                `json:"bedrooms,omitempty" validate:"required"`
+	Bathrooms   int                `json:"bathrooms,omitempty" validate:"required"`
+	Address     string             `json:"address,omitempty" validate:"required"`
+	Location    Location           `json:"location,omitempty"`
 	Created_at  time.Time          `json:"created_at,omitempty"`
 	Updated_at  time.Time          `json:"updated_at,omitempty"`
 	Images      []string           `json:"images,omitempty"`
