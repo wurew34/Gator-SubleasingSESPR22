@@ -12,8 +12,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: alpha("#FFFFFF", 0.25),
     },
-    width: 800,
+    width: 400,
     borderRadius: "10px",
+    
   },
   searchIcon: {
     height: "85%",
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchButton: {
     display: "flex",
+    justifyContent: "center"
   },
 }));
 
