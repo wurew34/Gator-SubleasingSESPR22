@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid,
-  Card,
+  FormControl,
   CardContent,
   Paper,
   TextField,
@@ -18,9 +18,11 @@ import {
   Box,
   Tooltip,
   CardMedia,
+  InputLabel,
 } from "@mui/material";
-import logo from "../Images/container logo.PNG";
-import mockImage from "../Images/Initial Logo.PNG";
+import Select from "react-select";
+import logo from "./Images/container logo.PNG";
+import mockImage from "./Images/Initial Logo.PNG";
 import "./styles.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
@@ -31,10 +33,14 @@ import Search from "./Lease/search";
 import { makeStyles } from "@mui/styles";
 import AppPagination from "./pagination";
 import SubleaseInfo from "./Lease/subleaseInfo";
-import CreateLease from "./Lease/createLease";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import { borderRadius } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "white",
+    display: "flex",
+    borderRadius: 4,
+  },
   container: {
     paddingLeft: "50px",
     paddingRight: "50px",
@@ -50,6 +56,39 @@ const theme = createTheme({
 });
 
 const Dashboard = () => {
+  const data = [
+    {
+      value: 1,
+      label: "Price: Low to High",
+      queryRequest: "price_asc",
+    },
+    {
+      value: 2,
+      label: "Price: High to Low",
+      queryRequest: "price_desc",
+    },
+    {
+      value: 3,
+      label: "Alphabetical: A-Z",
+      queryRequest: "title",
+    },
+    {
+      value: 4,
+      label: "Latest",
+      queryRequest: "created_at",
+    },
+    {
+      value: 5,
+      label: "Term Length: Low to High",
+      queryRequest: "term_asc",
+    },
+    {
+      value: 6,
+      label: "Term Length: High to Low",
+      queryRequest: "term_desc",
+    },
+  ];
+
   const classes = useStyles();
   let navigate = useNavigate();
 
@@ -58,13 +97,19 @@ const Dashboard = () => {
   const [numberOfPages, setNumberOfPages] = useState(5);
   const [search, setSearchQuery] = useState("");
 
+  const [sort, setSort] = useState("");
+  const handleChange = (obj) => {
+    setSort(obj.queryRequest);
+    console.log(sort);
+  };
+
   const fetchSublease = async () => {
     try {
       console.log(search);
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + localStorage.getItem("token");
       const { data } = await axios.get(
-        `http://localhost:8080/api/lease?page=${page}&s=${search}`
+        `http://localhost:8080/api/lease?page=${page}&s=${search}&sort=${sort}`
       );
       setSublease(data?.leases);
       setNumberOfPages(data?.last_page);
@@ -77,7 +122,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchSublease();
-  }, [page, search]);
+  }, [page, search, sort]);
 
   //create a button to navigate to create page using add icon
   const CreateButton = () => {
@@ -106,12 +151,9 @@ const Dashboard = () => {
         <AppBar id="app-bar" style={{ background: "#00529B" }}>
           <Toolbar>
             <Box sx={{ flexGrow: 1 }}>
-              <a href="/">
+              <a href="/dashboard">
                 <img src={logo} alt="logo" />
               </a>
-            </Box>
-            <Box sx={{ flexGrow: 4 }}>
-              <Search setQuery={(search) => setSearchQuery(search)} />
             </Box>
             <CreateButton />
             <Tooltip title="Profile">
@@ -136,11 +178,35 @@ const Dashboard = () => {
           </Toolbar>
         </AppBar>
       </Box>
+      <Box
+        sx={{ marginTop: 12, paddingLeft: 4, paddingRight: 5, marginLeft: 10 }}
+      >
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            navigate("/create-listing");
+          }}
+        >
+          Create Listing
+        </Button>
+        <Search
+          setQuery={(search) => setSearchQuery(search)}
+        />
+        <FormControl sx={{ marginLeft: 170 }} className={classes.root}>
+          <Select
+            placeholder="Sort by..."
+            value={sort}
+            onChange={handleChange}
+            options={data}
+          />
+        </FormControl>
+      </Box>
       <Paper
         elevation={5}
         sx={{
-          marginTop: 20,
-          padding: 30,
+          marginTop: 3,
+          padding: 10,
           paddingLeft: 4,
           paddingRight: 4,
         }}
