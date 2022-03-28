@@ -178,9 +178,7 @@ const Dashboard = () => {
           </Toolbar>
         </AppBar>
       </Box>
-      <Box
-        sx={{ marginTop: 12, paddingLeft: 4, paddingRight: 5, marginLeft: 10 }}
-      >
+      <Grid sx={{ marginTop: 12, marginLeft: 10 }} container>
         <Button
           color="primary"
           variant="contained"
@@ -190,10 +188,8 @@ const Dashboard = () => {
         >
           Create Listing
         </Button>
-        <Search
-          setQuery={(search) => setSearchQuery(search)}
-        />
-        <FormControl sx={{ marginLeft: 170 }} className={classes.root}>
+        <Search setQuery={(search) => setSearchQuery(search)} />
+        <FormControl sx={{ marginLeft: 50 }} className={classes.root}>
           <Select
             placeholder="Sort by..."
             value={sort}
@@ -201,7 +197,7 @@ const Dashboard = () => {
             options={data}
           />
         </FormControl>
-      </Box>
+      </Grid>
       <Paper
         elevation={5}
         sx={{
