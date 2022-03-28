@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Grid, Paper, TextField, Button, Typography } from "@mui/material";
-import logo from "./Images/container logo.PNG";
+import logo from "../Images/container logo.PNG";
 import "./styles.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";

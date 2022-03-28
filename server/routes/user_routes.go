@@ -9,6 +9,8 @@ import (
 func UserRoute(router *gin.Engine) {
 	router.Use(middleware.Authentication())
 	router.GET("/api/user", controller.GetUser())
-	
+	router.POST("/api/lease/create", controller.CreateLease())
+	router.PUT("/api/lease/:leaseId", controller.UpdateLease())
+	router.DELETE("/api/lease/:leaseId", controller.DeleteLease())
 	// router.GET("/api/user/:userId", controller.GetUserById())
 }

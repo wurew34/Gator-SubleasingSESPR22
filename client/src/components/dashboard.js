@@ -12,7 +12,10 @@ import {
   PaginationItem,
   Avatar,
   CssBaseline,
+  AppBar,
   IconButton,
+  Toolbar,
+  Box,
   Tooltip,
   CardMedia,
   InputLabel,
@@ -26,73 +29,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Search from "./search";
+import Search from "./Lease/search";
 import { makeStyles } from "@mui/styles";
 import AppPagination from "./pagination";
 import SubleaseInfo from "./Lease/subleaseInfo";
 import { borderRadius } from "@mui/system";
 
-// let endpoint = "http://localhost:8080";
-
-// const Dashboard = (props) => {
-//   const decoded = jwt_decode(localStorage.getItem("token"));
-//   const [firstName, setFirstName] = React.useState(decoded.First_name);
-//   const [lastName, setLastName] = React.useState(decoded.Last_name);
-//   const [email, setEmail] = React.useState(decoded.Email);
-//   console.log(decoded);
-
-//   let navigate = useNavigate();
-//   const fetchUser = () => {
-//     axios
-//       .get(endpoint + "/api/user", {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem("token")}`,
-//         },
-//       })
-//       .then((res) => {
-//         console.log(res.data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-
-//   const displayUser = () => {
-//     fetchUser();
-//     return (
-//       <div>
-//         <Typography variant="h4">Welcome to Dashboard!</Typography>
-//         <Typography variant="h5">
-//           {firstName} {lastName}
-//         </Typography>
-//         <Typography variant="h5">{email}</Typography>
-//       </div>
-//     );
-//   };
-//   return (
-//     <Grid item xs={12}>
-//       <Grid container spacing={10}>
-//         <Grid item xs={16}>
-//           <Typography variant="h5">Welcome to your dashboard</Typography>
-//         </Grid>
-//         <Grid item xs={12} style={{textAlign:"center"}}>
-//           {displayUser()}
-//           <Button
-//             onClick={() => {
-//               localStorage.removeItem("token");
-//               navigate("/login");
-//             }}
-//           >
-//             Logout
-//           </Button>
-//         </Grid>
-//       </Grid>
-//     </Grid>
-//   );
-// };
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "white",
@@ -104,26 +46,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "50px",
   },
 }));
-
-// const getSubleaseInfo = () => {
-//   return (
-//     <Grid item xs={3.2}>
-//       <Card>
-//         <CardMedia
-//           style={{
-//             margin: "auto",
-//           }}>
-//           {" "}
-//           <img src={mockImage} alt="mock" />{" "}
-//         </CardMedia>
-//         <CardContent>
-//           <Typography>Location</Typography>
-//           <Typography>Price</Typography>
-//         </CardContent>
-//       </Card>
-//     </Grid>
-//   );
-// };
 
 const theme = createTheme({
   palette: {
@@ -202,6 +124,26 @@ const Dashboard = () => {
     fetchSublease();
   }, [page, search, sort]);
 
+  //create a button to navigate to create page using add icon
+  const CreateButton = () => {
+    return (
+      <Tooltip title="Create a new lease">
+        <IconButton
+          aria-label="create"
+          onClick={() => {
+            navigate("/CreateLease");
+          }}
+        >
+          <AddCircleRoundedIcon
+            fontSize="large"
+            style={{
+              color: "orange",
+            }}
+          />
+        </IconButton>
+      </Tooltip>
+    );
+  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -213,6 +155,7 @@ const Dashboard = () => {
                 <img src={logo} alt="logo" />
               </a>
             </Box>
+            <CreateButton />
             <Tooltip title="Profile">
               <IconButton
                 onClick={() => {

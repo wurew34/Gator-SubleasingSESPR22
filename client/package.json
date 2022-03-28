@@ -12,9 +12,11 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.25.0",
+    "dotenv": "^16.0.0",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-geocode": "^0.2.3",
     "react-mdl": "^2.1.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
@@ -48,6 +50,7 @@
       "last 1 safari version"
     ]
   },
+
   "devDependencies": {
     "@testing-library/cypress": "^8.0.2",
     "@testing-library/react": "^12.1.3",

@@ -125,6 +125,33 @@ func DeleteLease() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"message": "lease deleted"})
 	}
 }
+func SearchLease() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		var leases []bson.M
+
+		//get all the titles of the leases
+		var lease_title []string
+
+		cursor, err := leaseCollection.Find(ctx, bson.M{})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if err := cursor.All(ctx, &leases); err != nil {
+			log.Fatal(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		// fmt.Printf(leases[0]["price"].(string))
+		for _, l := range leases {
+			lease_title = append(lease_title, l["title"].(string))
+		}
+		c.JSON(http.StatusOK, lease_title)
+	}
+}
 
 func GetAllLeases() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -145,6 +172,8 @@ func GetAllLeases() gin.HandlerFunc {
 		}
 
 		fmt.Println(leases)
+		//send lease by title
+
 		c.JSON(http.StatusOK, leases)
 	}
 }
@@ -247,7 +276,43 @@ func GetLeases() gin.HandlerFunc {
 		fmt.Printf("filter: %v\n", filter)
 		fmt.Println("Searching for leases...")
 
+		//filter lease by location
+		if lat := c.Query("lat"); lat != "" {
+			latFloat, err := strconv.ParseFloat(lat, 64)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
+
+			if lng := c.Query("lng"); lng != "" {
+				lngFloat, err := strconv.ParseFloat(lng, 64)
+				if err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+
+				filter = bson.M{
+					"$and": []bson.M{
+						filter,
+						{
+							"location": bson.M{
+								"$near": bson.M{
+									"$geometry": bson.M{
+										"type":        "Point",
+										"coordinates": []float64{lngFloat, latFloat},
+									},
+									"$maxDistance": 5000,
+								},
+							},
+						},
+					},
+				}
+			}
+		}
+
 		if sort := c.Query("sort"); sort != "" {
+
+			// {"Price: highg" : "price_desc"}
 			if sort == "title" {
 				findOptions.SetSort(bson.D{{"title", 1}})
 			} else if sort == "price_asc" {
@@ -264,7 +329,7 @@ func GetLeases() gin.HandlerFunc {
 				c.JSON(http.StatusBadRequest, gin.H{"error": "invalid sort"})
 				return
 			}
-			
+
 		}
 
 		page, err := strconv.Atoi(c.Query("page"))
