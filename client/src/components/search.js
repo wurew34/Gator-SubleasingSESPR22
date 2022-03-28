@@ -7,18 +7,19 @@ import { Button, InputBase } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   search: {
-    position: "relative",
+    position: "absolute",
     backgroundColor: alpha("#FFFFFF", 0.5),
     "&:hover": {
       backgroundColor: alpha("#FFFFFF", 0.25),
     },
-    width: 800,
+    width: 600,
     borderRadius: "10px",
+    marginLeft: 350,
+    height: "4%",
   },
   searchIcon: {
     height: "85%",
     position: "absolute",
-    pointerEvents: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchButton: {
     display: "flex",
+    paddingLeft: 880,
   },
 }));
 
@@ -35,7 +37,7 @@ const Search = (props) => {
   const classes = useStyles();
   const [localSearch, setLocalSearch] = useState("");
   return (
-    <div className={classes.searchButton}>
+    <div>
       <div className={classes.search}>
         <div className={classes.searchIcon}>
           <SearchIcon />
@@ -51,15 +53,16 @@ const Search = (props) => {
           }}
         />
       </div>
-      <Button
-        variant="contained"
-        className={classes.searchStyle}
-        onClick={() => {
-          props.setQuery(localSearch);
-        }}
-      >
-        SEARCH
-      </Button>
+      <div className={classes.searchButton}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            props.setQuery(localSearch);
+          }}
+        >
+          SEARCH
+        </Button>
+      </div>
     </div>
   );
 };
