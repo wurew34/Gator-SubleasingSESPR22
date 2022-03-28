@@ -55,7 +55,7 @@ func TestMain(m *testing.M) {
 }
 
 
-var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
+// var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
 
 
 func Test_SignUp(t *testing.T) {
@@ -121,7 +121,7 @@ func Test_Login(t *testing.T) {
 
 
 
-func Test_Login(t *testing.T) {
+func Test_InvalidLogin(t *testing.T) {
 
 	r := gin.Default()
 	a := assert.New(t)

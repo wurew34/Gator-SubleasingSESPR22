@@ -125,15 +125,15 @@ func DeleteLease() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"message": "lease deleted"})
 	}
 }
-func SearchLease() gin.HandlerFunc{
-	return func(c *gin.Context){
+func SearchLease() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var leases []bson.M
 
 		//get all the titles of the leases
 		var lease_title []string
-		
+
 		cursor, err := leaseCollection.Find(ctx, bson.M{})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -145,6 +145,7 @@ func SearchLease() gin.HandlerFunc{
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		// fmt.Printf(leases[0]["price"].(string))
 		for _, l := range leases {
 			lease_title = append(lease_title, l["title"].(string))
 		}
@@ -172,7 +173,7 @@ func GetAllLeases() gin.HandlerFunc {
 
 		fmt.Println(leases)
 		//send lease by title
-		
+
 		c.JSON(http.StatusOK, leases)
 	}
 }
@@ -310,7 +311,7 @@ func GetLeases() gin.HandlerFunc {
 		}
 
 		if sort := c.Query("sort"); sort != "" {
-	
+
 			// {"Price: highg" : "price_desc"}
 			if sort == "title" {
 				findOptions.SetSort(bson.D{{"title", 1}})
@@ -328,7 +329,7 @@ func GetLeases() gin.HandlerFunc {
 				c.JSON(http.StatusBadRequest, gin.H{"error": "invalid sort"})
 				return
 			}
-			
+
 		}
 
 		page, err := strconv.Atoi(c.Query("page"))

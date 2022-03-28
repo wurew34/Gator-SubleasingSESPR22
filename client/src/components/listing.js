@@ -4,7 +4,7 @@ import { Card } from "@mui/material";
 import "./listing.css";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import Geocode from "../../../config/geocoding-config";
+import Geocode from "../config/geocoding-config";
 let endpoint = "http://localhost:8080";
 
 const Listing = (props) => {
