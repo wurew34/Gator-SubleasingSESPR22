@@ -27,7 +27,7 @@ import {
 const InitalLeaseValues = {
   bathrooms: 1,
   bedrooms: 1,
-  price: 0,
+  price: 0.0,
   term: 1,
   description: "",
   address: "",
@@ -51,11 +51,44 @@ const theme = createTheme({
 
 export default function CreateLease(props) {
   const [lease, setLease] = useState(InitalLeaseValues);
+  const [address, setAddress] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0.0);
+  const [bedrooms, setBedrooms] = useState(1);
+  const [bathrooms, setBathrooms] = useState(1);
+  const [term, setTerm] = useState(1);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setLease({ ...lease, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newLease = {
+      bathrooms: bathrooms,
+      bedrooms: bedrooms,
+      price: parseFloat(price),
+      term: term,
+      description: description,
+      Address: address,
+      title: title,
+    };
+    console.log(newLease);
+    axios.defaults.headers.common["Authorization"] =
+      "Bearer " + localStorage.getItem("token");
+
+    axios
+      .post("http://localhost:8080/api/lease/create", newLease)
+      .then((res) => {
+        console.log(res.data);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -93,21 +126,25 @@ export default function CreateLease(props) {
       </Box>
       <Paper elevation={24} style={paperStyle}>
         <h2>Create Listing</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <TextField
             label="Title"
             name="title"
-            value={lease.title}
-            onChange={handleChange}
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
             margin="normal"
             variant="outlined"
             fullWidth
           />
           <TextField
             label="Address"
-            name="address"
-            value={lease.address}
-            onChange={handleChange}
+            name="Address"
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -115,8 +152,10 @@ export default function CreateLease(props) {
           <TextField
             label="Description"
             name="description"
-            value={lease.description}
-            onChange={handleChange}
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -125,8 +164,10 @@ export default function CreateLease(props) {
             label="Rent"
             name="price"
             type="number"
-            value={lease.price}
-            onChange={handleChange}
+            value={price}
+            onChange={(e) => {
+              setPrice(e.target.value);
+            }}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -135,8 +176,10 @@ export default function CreateLease(props) {
             label="Lease Term"
             name="term"
             type="number"
-            value={lease.term}
-            onChange={handleChange}
+            value={term}
+            onChange={(e) => {
+              setTerm(e.target.value);
+            }}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -145,8 +188,10 @@ export default function CreateLease(props) {
             label="Bedrooms"
             name="bedrooms"
             type="number"
-            value={lease.bedrooms}
-            onChange={handleChange}
+            value={bedrooms}
+            onChange={(e) => {
+              setBedrooms(e.target.value);
+            }}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -155,31 +200,15 @@ export default function CreateLease(props) {
             label="Bathrooms"
             name="bathrooms"
             type="number"
-            value={lease.bathrooms}
-            onChange={handleChange}
+            value={bathrooms}
+            onChange={(e) => {
+              setBathrooms(e.target.value);
+            }}
             margin="normal"
             variant="outlined"
             fullWidth
           />
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              console.log(lease);
-              axios.defaults.headers.common["Authorization"] =
-                "Bearer " + localStorage.getItem("token");
-              axios
-                .post("http://localhost:8080/api/lease/create", lease)
-                .then((res) => {
-                  console.log(res);
-                  navigate("/dashboard");
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }}
-          >
-            Submit
-          </button>
+          <Button type="submit">Submit</Button>
         </form>
       </Paper>
     </ThemeProvider>
