@@ -13,6 +13,7 @@ require (
 
 require (
 	github.com/Valiben/gin_unit_test v0.0.0-20181205064931-674aee46d090
+	github.com/codingsince1985/geo-golang v1.8.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/sse v0.1.0 // indirect
