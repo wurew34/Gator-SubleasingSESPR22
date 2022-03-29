@@ -35,22 +35,26 @@ func CreateLease() gin.HandlerFunc {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var lease models.Lease
-
+		fmt.Print("Hi this is create lease")
+		fmt.Print(c.Request.Body)
 		if err := c.BindJSON(&lease); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-
-		if err := validate.Struct(lease); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		validationErr := validate.Struct(lease)
+		if validationErr != nil {
+			log.Panic("Validation Error: ", validationErr)
+			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
 			return
 		}
+		fmt.Print(lease)
+
 		// validate the lease data
 		if err := validate.Struct(lease); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 
 		lease.ID = primitive.NewObjectID()
 		userId, exists := c.Get("uid")
