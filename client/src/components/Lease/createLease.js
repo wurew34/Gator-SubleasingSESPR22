@@ -30,7 +30,7 @@ const InitalLeaseValues = {
   price: 0,
   term: 1,
   description: "",
-  Address: "",
+  address: "",
 };
 
 const paperStyle = {
@@ -105,8 +105,8 @@ export default function CreateLease(props) {
           />
           <TextField
             label="Address"
-            name="Address"
-            value={lease.Address}
+            name="address"
+            value={lease.address}
             onChange={handleChange}
             margin="normal"
             variant="outlined"
