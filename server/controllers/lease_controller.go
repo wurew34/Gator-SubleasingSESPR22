@@ -16,7 +16,8 @@ import (
 
 	"github.com/wurew34/Gator-SubleasingSESPR22/configs"
 	"github.com/wurew34/Gator-SubleasingSESPR22/models"
-
+	helper "github.com/wurew34/Gator-SubleasingSESPR22/helpers"
+	
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -34,16 +35,26 @@ func CreateLease() gin.HandlerFunc {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var lease models.Lease
-
+		fmt.Print("Hi this is create lease")
+		fmt.Print(c.Request.Body)
 		if err := c.BindJSON(&lease); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+		validationErr := validate.Struct(lease)
+		if validationErr != nil {
+			log.Panic("Validation Error: ", validationErr)
+			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
+			return
+		}
+		fmt.Print(lease)
 
+		// validate the lease data
 		if err := validate.Struct(lease); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+
 
 		lease.ID = primitive.NewObjectID()
 		userId, exists := c.Get("uid")
@@ -51,6 +62,13 @@ func CreateLease() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
 			return
 		}
+		lat, lng, err := helper.GetLocation(lease.Address)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		lease.Location.Coordinates = []float64{lat, lng}
+		lease.Location.Type = "Point"
 		lease.Lease_id = lease.ID.Hex()
 		lease.User_id = userId.(string)
 		lease.Created_at = time.Now()
