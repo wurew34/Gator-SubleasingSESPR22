@@ -1,9 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { makeStyles } from "@mui/styles";
 import { alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputBase } from "@mui/material";
+import { Button, TextField, Autocomplete, InputBase } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: alpha("#FFFFFF", 0.25),
     },
     width: 600,
-    borderRadius: "10px",
+    borderRadius: "5px",
     marginLeft: 350,
     height: "4%",
   },
@@ -36,21 +37,40 @@ const useStyles = makeStyles((theme) => ({
 const Search = (props) => {
   const classes = useStyles();
   const [localSearch, setLocalSearch] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const loadTitles = async () => {
+    const response = await axios.get("http://localhost:8080/api/search_lease");
+    console.log(response.data);
+    setSuggestions(response.data);
+  };
+
+  useEffect(() => {
+    loadTitles();
+  }, []);
+
   return (
     <div>
       <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          placeholder="Search for properties..."
-          fullWidth
-          required
-          className={classes.input}
-          onChange={(e) => {
-            e.preventDefault();
-            setLocalSearch(e.target.value);
-          }}
+        <Autocomplete
+          id="search-suggest"
+          options={suggestions}
+          freeSolo
+          size="small"
+          onChange={(e, value) => setLocalSearch(value)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Search for properties..."
+              fullWidth
+              required
+              className={classes.input}
+              onChange={(e) => {
+                e.preventDefault();
+                setLocalSearch(e.target.value);
+              }}
+            />
+          )}
         />
       </div>
       <div className={classes.searchButton}>

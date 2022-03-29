@@ -1,5 +1,5 @@
 import React from "react";
-import mockImage from '../../Images/Initial Logo.PNG';
+import mockImage from '../Images/Initial Logo.PNG';
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
