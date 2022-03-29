@@ -8,7 +8,7 @@ import {
   Box,
   Toolbar,
 } from "@mui/material";
-import logo from "../Images/container logo.PNG";
+import logo from "./Images/container logo.PNG";
 import "./styles.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";

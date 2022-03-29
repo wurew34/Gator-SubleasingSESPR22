@@ -1,4 +1,4 @@
-import Image from "../Images/uf.jpg";
+import Image from "./Images/uf.jpg";
 import { makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import logo from "../Images/container logo.PNG";
+import logo from "./Images/container logo.PNG";
 import { fontFamily, margin } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
