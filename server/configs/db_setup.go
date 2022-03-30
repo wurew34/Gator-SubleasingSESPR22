@@ -42,8 +42,9 @@ func GetCollection(client *mongo.Client, collectionName string) *mongo.Collectio
 }
 
 func GetEnv(key string) string {
-	err := godotenv.Load(".env")
+	err := godotenv.Load()
 	if err != nil {
+		log.Fatal(err)
 		log.Fatal("Error loading .env file")
 		panic(err)
 	}

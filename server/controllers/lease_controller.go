@@ -48,20 +48,18 @@ func CreateLease() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
 			return
 		}
-		fmt.Print(lease)
-
-		// validate the lease data
-		// if err := validate.Struct(lease); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
 		lease.ID = primitive.NewObjectID()
 		userId, exists := c.Get("uid")
 		if !exists {
-			log.Fatal("user id not found")
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
-			return
+			if lease.User_id != "" {
+				userId = lease.User_id
+
+			} else {
+				log.Fatal("user id not found")
+				c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+				return
+
+			}
 		}
 		lat, lng, err := helper.GetLocation(lease.Address)
 		if err != nil {
@@ -69,7 +67,7 @@ func CreateLease() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		lease.Location.Coordinates = []float64{lat, lng}
+		lease.Location.Coordinates = []float64{lng, lat}
 		lease.Location.Type = "Point"
 		lease.Lease_id = lease.ID.Hex()
 		lease.User_id = userId.(string)
@@ -112,15 +110,22 @@ func UpdateLease() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		lease.Location.Coordinates = []float64{lat, lng}
+		lease.Location.Coordinates = []float64{lng, lat}
 		lease.Location.Type = "Point"
 		// lease.Lease_id = givenLeaseId
 
 		userId, exists := c.Get("uid")
 		if !exists {
-			log.Fatal("user id not found")
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
-			return
+			if userId != "" {
+				userId = lease.User_id
+
+			} else {
+
+				log.Fatal("user id not found")
+				c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+				return
+
+			}
 		}
 		if lease.User_id != userId.(string) {
 			log.Fatal("user id not matched")
@@ -184,7 +189,6 @@ func SearchLease() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		// fmt.Printf(leases[0]["price"].(string))
 		for _, l := range leases {
 			lease_title = append(lease_title, l["title"].(string))
 		}
@@ -210,10 +214,6 @@ func GetAllLeases() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-
-		fmt.Println(leases)
-		//send lease by title
-
 		c.JSON(http.StatusOK, leases)
 	}
 }

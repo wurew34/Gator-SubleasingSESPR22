@@ -22,6 +22,7 @@ func main() {
 	r.Use(cors.New(corsConfig))
 	routes.AuthRoute(r)
 	routes.LeaseRoute(r)
+	routes.TestRoute(r)
 	routes.UserRoute(r)
 	r.Run("localhost:8080")
 }
