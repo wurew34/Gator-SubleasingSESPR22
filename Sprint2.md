@@ -358,6 +358,9 @@ Sample Response
   "message": "lease deleted"
 }
 ```
+# Unit Testing For Backend
+
+1. `go test -run ^TestMain`
 
 # Front-End e2e and Unit Testing Documentation
 
