@@ -30,20 +30,24 @@ var UserId string
 var LeaseId string
 
 func TestMain(m *testing.T) {
+	m.Log("Unit Tests Started")
 	m.Run("Test Signup", Test_SignUp)
 	m.Run("Test Login", Test_Login)
 	m.Run("Test Invalid SignUp", Test_InvalidSignUp)
 	m.Run("Test Invalid Login", Test_InvalidLogin)
-	m.Log("Auth Test Completed")
 	drop_Lease()
 	m.Run("Test Create Lease", Test_CreateLease)
 	m.Run("Test Get By Id", Test_GetLeaseById)
 	m.Run("Test Get Leases", Test_GetLease)
+	m.Run("Test Get Leases By Search Term", Test_GetLeaseBySearchTerm)
+	m.Run("Test Get Leases By Sort", Test_GetLeaseBySort)
+	m.Run("Test Get Leases by Bed and Bath rooms", Test_GetLeaseByRooms)
+	m.Run("Test Get Leases by Pagination", Test_GetLeaseByPagination)
 	m.Run("Test Get All Lease", Test_GetAllLeases)
 	m.Run("Test Search Lease", Test_SearchLeases)
 	m.Run("Test Update Lease", Test_UpdateLease)
 	m.Run("Test Delete Lease", Test_DeleteLease)
-	m.Log("Lease Test Completed")
+	m.Log("Unit Tests Completed")
 
 }
 
@@ -319,6 +323,57 @@ func Test_GetLease(t *testing.T) {
 	r.GET("/api/test/lease", controller.GetLeases())
 	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
 	req := httptest.NewRequest(http.MethodGet, "/api/test/lease", nil)
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+}
+
+func Test_GetLeaseBySearchTerm(t *testing.T) {
+	r := gin.Default()
+	a := assert.New(t)
+	r.GET("/api/test/lease", controller.GetLeases())
+	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?s=enclave", nil)
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+}
+func Test_GetLeaseBySort(t *testing.T) {
+	r := gin.Default()
+	a := assert.New(t)
+	r.GET("/api/test/lease", controller.GetLeases())
+	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?s=title", nil)
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+}
+
+func Test_GetLeaseByRooms(t *testing.T) {
+	r := gin.Default()
+	a := assert.New(t)
+	r.GET("/api/test/lease", controller.GetLeases())
+	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?bath=1&bed=1", nil)
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+}
+
+func Test_GetLeaseByPagination(t *testing.T) {
+	r := gin.Default()
+	a := assert.New(t)
+	r.GET("/api/test/lease", controller.GetLeases())
+	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?page=2&limit=4", nil)
 
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
