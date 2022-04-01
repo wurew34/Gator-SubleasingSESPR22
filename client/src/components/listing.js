@@ -19,7 +19,7 @@ const Listing = (props) => {
   // Geocode.fromAddress("2800 SW 35th Place, Gainesville Place Apartments, 32608").then(
   //   (response) => {
   //     const { lat, lng } = response.results[0].geometry.location;
-  //     setAddress(sublease.address); 
+  //     setAddress(sublease.address);
   //     setCity(sublease.city);
   //     console.log(process.env.GEO_API);
   //     console.log(lat, lng);
@@ -31,10 +31,12 @@ const Listing = (props) => {
 
   useEffect(() => {
     console.log(process.env.REACT_APP_GEO_API);
-    Geocode.fromAddress("2800 SW 35th Place, Gainesville Place Apartments, 32608").then(
+    Geocode.fromAddress(
+      "2800 SW 35th Place, Gainesville Place Apartments, 32608"
+    ).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
-        setAddress(sublease.address); 
+        setAddress(sublease.address);
         setCity(sublease.city);
         console.log(process.env.GEO_API);
         setLat(lat);
@@ -55,10 +57,7 @@ const Listing = (props) => {
         console.error(error);
       }
     );
-
   }, []);
-
-
 
   return (
     <div class="container">
@@ -93,10 +92,7 @@ const Listing = (props) => {
               <h2>Bedrooms: {sublease?.bedrooms}</h2>
               <h2>Bathrooms: {sublease?.bathrooms}</h2>
               <h2>Location:</h2>
-              <h2 color="white">
-                {" "}
-                2800 SW 35th Place, Gainesville Place Apartments, 32608
-              </h2>
+              <h2 color="white">{sublease?.address}</h2>
               <h2>Description: {sublease?.description}</h2>
               <h2>Price: ${sublease?.price}/month </h2>
             </h1>

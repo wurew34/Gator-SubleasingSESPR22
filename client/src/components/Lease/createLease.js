@@ -30,7 +30,7 @@ const InitalLeaseValues = {
   price: 0.0,
   term: 1,
   description: "",
-  Address: "",
+  address: "",
 };
 
 const paperStyle = {
@@ -61,9 +61,9 @@ export default function CreateLease(props) {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setLease({ ...lease, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   setLease({ ...lease, [e.target.name]: e.target.value });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -132,6 +132,8 @@ export default function CreateLease(props) {
           <TextField
             label="Title"
             name="title"
+            data-testid="title"
+            id="title"
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
@@ -143,6 +145,8 @@ export default function CreateLease(props) {
           <TextField
             label="Address"
             name="Address"
+            id="address"
+            data-testid="address"
             value={address}
             onChange={(e) => {
               setAddress(e.target.value);
@@ -154,6 +158,8 @@ export default function CreateLease(props) {
           <TextField
             label="Description"
             name="description"
+            id="description"
+            data-testid="description"
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
@@ -165,6 +171,8 @@ export default function CreateLease(props) {
           <TextField
             label="Rent"
             name="price"
+            id="price"
+            data-testid="price"
             type="number"
             value={price}
             onChange={(e) => {
@@ -177,6 +185,8 @@ export default function CreateLease(props) {
           <TextField
             label="Lease Term"
             name="term"
+            id="term"
+            data-testid="term"
             type="number"
             value={term}
             onChange={(e) => {
@@ -189,6 +199,8 @@ export default function CreateLease(props) {
           <TextField
             label="Bedrooms"
             name="bedrooms"
+            id="bedrooms"
+            data-testid="bedrooms"
             type="number"
             value={bedrooms}
             onChange={(e) => {
@@ -201,6 +213,8 @@ export default function CreateLease(props) {
           <TextField
             label="Bathrooms"
             name="bathrooms"
+            id="bathrooms"
+            data-testid="bathrooms"
             type="number"
             value={bathrooms}
             onChange={(e) => {
