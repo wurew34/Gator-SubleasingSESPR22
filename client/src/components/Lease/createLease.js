@@ -67,11 +67,13 @@ export default function CreateLease(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //convert terms to int
+    // lease.term = parseInt(lease.term);
     const newLease = {
-      bathrooms: bathrooms,
-      bedrooms: bedrooms,
+      bathrooms: parseInt(bathrooms),
+      bedrooms: parseInt(bedrooms),
       price: parseFloat(price),
-      term: term,
+      term: parseInt(term),
       description: description,
       Address: address,
       title: title,
