@@ -4,6 +4,30 @@ import {Card} from "@mui/material";
 import './listings.css';
 import Colors from './Colors'
 import DetailsThumb from './DetailsThumb'
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import logo from "./Images/container logo.PNG";
+import Toolbar from "@mui/material/Toolbar";
+import ParticleBackground from "../ParticleBackground"
+
+import {
+    Grid,
+    
+    CardContent,
+    
+    TextField,
+    Button,
+    
+    Autocomplete,
+    Pagination,
+    PaginationItem,
+    Avatar,
+    CssBaseline,
+    IconButton,
+    Tooltip,
+    CardMedia,
+  } from "@mui/material";
+  
 class Listings extends React.Component{
 
     state = {
@@ -47,14 +71,29 @@ class Listings extends React.Component{
       const {index} = this.state;
       this.myRef.current.children[index].className = "active";
     }
+    
   
   
     render(){
       const {products, index} = this.state;
       return(
           
+        <body > 
+            <Box sx={{ flexGrow: 1 }}>
+        <AppBar id="app-bar" style={{ background: "#00529B" }}>
+          <Toolbar>
+            <Box sx={{ flexGrow: 1 }}>
+              <a href="/dashboard">
+                <img src={logo} alt="logo" />
+              </a>
+            </Box>
             
-        <div className="app" style={{backgroundColor: 'white'}}>
+            
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <ParticleBackground/>
+        <div className="app" style={{backgroundColor:'white'}}>
           {
             products.map(sublease =>(
               <div className="details" key={sublease._id}  >
@@ -62,7 +101,7 @@ class Listings extends React.Component{
                   <img src={sublease.src[index]} alt=""/>
                 </div>
   
-                <div className="box" >
+                <div className="box"  >
                   <div className="row" >
                     <h2>{sublease.title}</h2>
                     <span>Rent: ${sublease.price}</span>
@@ -82,6 +121,7 @@ class Listings extends React.Component{
             ))
           }
         </div>
+        </body>  
         
       );
     };

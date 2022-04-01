@@ -2,7 +2,9 @@
     max-width: 1200px;
     width: 100%;
     margin: 100px auto;
-    box-shadow: 0 0 5px #ccc;
+    box-shadow: 0 0 9px #000;
+    z-index: 1;
+    border-radius: 10px;
   }
   .details{
     display: flex;
@@ -28,6 +30,7 @@
     max-width: 500px;
     min-width: 290px;
     margin: 25px;
+    
   }
   .box .row{
     display: flex;
@@ -92,3 +95,9 @@
       width: 50px;
     }
   }
+
+  body{
+    background-color : #163766 
+  }
+
+  
