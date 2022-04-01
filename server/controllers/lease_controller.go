@@ -15,6 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/wurew34/Gator-SubleasingSESPR22/configs"
+	helper "github.com/wurew34/Gator-SubleasingSESPR22/helpers"
 	"github.com/wurew34/Gator-SubleasingSESPR22/models"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -31,65 +32,50 @@ var leaseCollection *mongo.Collection = configs.GetCollection(configs.DB, "lease
 func CreateLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		//allow all origins
-		// c.Header("Content-Type", "application/json")
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var lease models.Lease
-		// upload images to gridfs
-		// lease.Images = []string{"test.jpg"}
-		// fileName := c.Param("fileName")
-		// file, _, err := c.Request.FormFile("file")
-
-		// bucket, err := gridfs.NewBucket(
-		// 	configs.DB.Database("gatorSubleasing"),
-		// )
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// uploadStream, err := bucket.OpenUploadStream(fileName)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// defer uploadStream.Close()
-		// // upload the image file
-
-		// if _, err := io.Copy(uploadStream, file); err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// lease.Images = []string{fileName}
-		// // lease.Images = append(lease.Images, fileName)
-		// lease.Images = append(lease.Images, fileName)
-
+		fmt.Print("Hi this is create lease")
+		fmt.Print(c.Request.Body)
 		if err := c.BindJSON(&lease); err != nil {
+			log.Fatal("Error binding the json: ", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-
-		if err := validate.Struct(lease); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		validationErr := validate.Struct(lease)
+		if validationErr != nil {
+			log.Panic("Validation Error: ", validationErr)
+			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
 			return
 		}
-
 		lease.ID = primitive.NewObjectID()
 		userId, exists := c.Get("uid")
 		if !exists {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+			if lease.User_id != "" {
+				userId = lease.User_id
+
+			} else {
+				log.Fatal("user id not found")
+				c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+				return
+
+			}
+		}
+		lat, lng, err := helper.GetLocation(lease.Address)
+		if err != nil {
+			log.Fatal("Error getting the location: ", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+		lease.Location.Coordinates = []float64{lng, lat}
+		lease.Location.Type = "Point"
 		lease.Lease_id = lease.ID.Hex()
 		lease.User_id = userId.(string)
 		lease.Created_at = time.Now()
 		lease.Updated_at = time.Now()
 
 		if _, err := leaseCollection.InsertOne(ctx, lease); err != nil {
+			log.Fatal("Error inserting the lease: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -100,13 +86,6 @@ func CreateLease() gin.HandlerFunc {
 
 func UpdateLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//update lease
-		//allow all origins
-		// c.Header("Content-Type", "application/json")
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		givenLeaseId := c.Param("leaseId")
@@ -114,34 +93,56 @@ func UpdateLease() gin.HandlerFunc {
 		var lease models.Lease
 
 		if err := c.BindJSON(&lease); err != nil {
+			log.Fatal("Error binding the json: ", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
 		if err := validate.Struct(lease); err != nil {
+			log.Panic("Validation Error: ", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		userId, exists := c.Get("uid")
-		if !exists {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+		lat, lng, err := helper.GetLocation(lease.Address)
+		if err != nil {
+			log.Fatal("Error getting the location: ", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+		lease.Location.Coordinates = []float64{lng, lat}
+		lease.Location.Type = "Point"
+		// lease.Lease_id = givenLeaseId
+
+		userId, exists := c.Get("uid")
+		if !exists {
+			if userId != "" {
+				userId = lease.User_id
+
+			} else {
+
+				log.Fatal("user id not found")
+				c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+				return
+
+			}
+		}
 		if lease.User_id != userId.(string) {
+			log.Fatal("user id not matched")
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not match"})
 			return
 		}
 		if lease.Lease_id != givenLeaseId {
+			log.Fatal("lease id not matched")
 			c.JSON(http.StatusBadRequest, gin.H{"error": "lease id not match"})
 			return
 		}
 
-		// lease.ID = lease.Lease_id.(primitive.ObjectID)
 		lease.User_id = userId.(string)
 		lease.Updated_at = time.Now()
 
 		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"lease_id": lease.Lease_id}, bson.M{"$set": lease}); err != nil {
+			log.Fatal("Error updating the lease: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -155,37 +156,11 @@ func DeleteLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//delete lease
 		leaseId := c.Param("leaseId")
-		// convert param to ObjectId
-		// leaseId, err := primitive.ObjectIDFromHex(param)
-		// leaseId := primitive.ObjectID(param)
-		// if err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
-		// var lease models.Lease
-
-		// if err := c.BindJSON(&lease); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
-		// if err := validate.Struct(lease); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
-		// userId, exists := c.Get("uid")
-		// if !exists {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
-		// 	return
-		// }
-		// lease.User_id = userId.(string)
-		// lease.Updated_at = time.Now()
 
 		if _, err := leaseCollection.DeleteOne(ctx, bson.M{"lease_id": leaseId}); err != nil {
+			log.Fatal("Error deleting the lease: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -193,22 +168,18 @@ func DeleteLease() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"message": "lease deleted"})
 	}
 }
-
-func GetAllLeases() gin.HandlerFunc {
+func SearchLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//get all leases
-		//allow all origins
-		// c.Header("Content-Type", "application/json")
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		var leases []bson.M
 
+		//get all the titles of the leases
+		var lease_title []string
+
 		cursor, err := leaseCollection.Find(ctx, bson.M{})
 		if err != nil {
+			log.Fatal("Error getting the leases: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -218,14 +189,31 @@ func GetAllLeases() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		for _, l := range leases {
+			lease_title = append(lease_title, l["title"].(string))
+		}
+		c.JSON(http.StatusOK, lease_title)
+	}
+}
 
-		fmt.Println(leases)
+func GetAllLeases() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		var leases []bson.M
 
-		// if err := leaseCollection.Find(ctx, bson.M{}).All(ctx, &leases); err != nil {
-		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		// 	return
-		// }z
+		cursor, err := leaseCollection.Find(ctx, bson.M{})
+		if err != nil {
+			log.Fatal("Error getting the leases: ", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 
+		if err := cursor.All(ctx, &leases); err != nil {
+			log.Fatal(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 		c.JSON(http.StatusOK, leases)
 	}
 }
@@ -238,15 +226,16 @@ func GetLeaseById() gin.HandlerFunc {
 		var lease models.Lease
 
 		param := c.Param("leaseId")
-		// convert param to ObjectId
 		leaseId, err := primitive.ObjectIDFromHex(param)
-		// leaseId := primitive.ObjectID(param)
+
 		if err != nil {
+			log.Fatal("Error getting the lease id: ", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
 		if err := leaseCollection.FindOne(ctx, bson.M{"_id": leaseId}).Decode(&lease); err != nil {
+			log.Fatal("Error getting the lease: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -288,6 +277,7 @@ func GetLeases() gin.HandlerFunc {
 		if bath := c.Query("bath"); bath != "" {
 			bathInt, err := strconv.Atoi(bath)
 			if err != nil {
+				log.Fatal("Error getting the bath: ", err)
 				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 				return
 			}
@@ -309,6 +299,7 @@ func GetLeases() gin.HandlerFunc {
 			//convert to int
 			bedInt, err := strconv.Atoi(bed)
 			if err != nil {
+				log.Fatal("Error getting the bed: ", err)
 				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 				return
 			}
@@ -326,19 +317,66 @@ func GetLeases() gin.HandlerFunc {
 			}
 		}
 
-		fmt.Printf("filter: %v\n", filter)
-		fmt.Println("Searching for leases...")
+		// fmt.Printf("filter: %v\n", filter)
+		// fmt.Println("Searching for leases...")
+
+		//filter lease by location
+		if lat := c.Query("lat"); lat != "" {
+			latFloat, err := strconv.ParseFloat(lat, 64)
+			if err != nil {
+				log.Fatal("Error getting the lat: ", err)
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
+
+			if lng := c.Query("lng"); lng != "" {
+				lngFloat, err := strconv.ParseFloat(lng, 64)
+				if err != nil {
+					log.Fatal("Error getting the lng: ", err)
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+
+				filter = bson.M{
+					"$and": []bson.M{
+						filter,
+						{
+							"location": bson.M{
+								"$near": bson.M{
+									"$geometry": bson.M{
+										"type":        "Point",
+										"coordinates": []float64{lngFloat, latFloat},
+									},
+									"$maxDistance": 5000,
+								},
+							},
+						},
+					},
+				}
+			}
+		}
 
 		if sort := c.Query("sort"); sort != "" {
+
+			// {"Price: highg" : "price_desc"}
 			if sort == "title" {
-				findOptions.SetSort(bson.D{{"title", 1}})
+				findOptions.SetSort(bson.D{{Key: "title", Value: 1}})
 			} else if sort == "price_asc" {
-				findOptions.SetSort(bson.D{{"price", 1}})
+				findOptions.SetSort(bson.D{{Key: "price", Value: 1}})
 			} else if sort == "created_at" {
-				findOptions.SetSort(bson.D{{"created_at", 1}})
+				findOptions.SetSort(bson.D{{Key: "created_at", Value: 1}})
 			} else if sort == "price_desc" {
-				findOptions.SetSort(bson.D{{"price", -1}})
+				findOptions.SetSort(bson.D{{Key: "price", Value: -1}})
+			} else if sort == "term_asc" {
+				findOptions.SetSort(bson.D{{Key: "term", Value: 1}})
+			} else if sort == "term_desc" {
+				findOptions.SetSort(bson.D{{Key: "term", Value: -1}})
+			} else {
+				log.Fatal("Error getting the sort: ", sort)
+				c.JSON(http.StatusBadRequest, gin.H{"error": "invalid sort"})
+				return
 			}
+
 		}
 
 		page, err := strconv.Atoi(c.Query("page"))
@@ -353,7 +391,7 @@ func GetLeases() gin.HandlerFunc {
 
 		total, err := leaseCollection.CountDocuments(ctx, filter)
 		if err != nil {
-
+			log.Fatal("Error getting the total: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -366,6 +404,7 @@ func GetLeases() gin.HandlerFunc {
 		defer cursor.Close(ctx)
 
 		if err != nil {
+			log.Fatal("Error getting the leases: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -373,6 +412,7 @@ func GetLeases() gin.HandlerFunc {
 		for cursor.Next(ctx) {
 			var lease models.Lease
 			if err := cursor.Decode(&lease); err != nil {
+				log.Fatal("Error decoding the lease: ", err)
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
 			}

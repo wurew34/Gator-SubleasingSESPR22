@@ -68,6 +68,8 @@ const Signup = (props) => {
                 <TextField
                   label="Enter First Name"
                   placeholder="Enter First Name"
+                  id="first-name"
+                  data-testid="first-name"
                   fullWidth
                   required
                   onChange={(e) => {
@@ -79,6 +81,8 @@ const Signup = (props) => {
                 <TextField
                   label="Enter Last Name"
                   placeholder="Enter Last Name"
+                  id="last-name"
+                  data-testid="last-name"
                   fullWidth
                   required
                   onChange={(e) => {
@@ -90,6 +94,8 @@ const Signup = (props) => {
                 <TextField
                   label="E-mail Address"
                   placeholder="Enter E-mail Address"
+                  id="email"
+                  data-testid="email"
                   fullWidth
                   required
                   onChange={(e) => {
@@ -102,6 +108,8 @@ const Signup = (props) => {
                   label="Create Password"
                   placeholder="Enter Password"
                   type="password"
+                  id="password"
+                  data-testid="password"
                   fullWidth
                   required
                   onChange={(e) => {
@@ -114,6 +122,8 @@ const Signup = (props) => {
                   label="Confirm Password"
                   placeholder="Enter Password"
                   type="password"
+                  id="confirm-password"
+                  data-testid="confirm-password"
                   fullWidth
                   required
                 />

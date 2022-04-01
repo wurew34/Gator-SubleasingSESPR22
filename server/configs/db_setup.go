@@ -13,7 +13,7 @@ import (
 )
 
 func ConnectDB() *mongo.Client {
-	client, err := mongo.NewClient(options.Client().ApplyURI(getEnv("DB_URI")))
+	client, err := mongo.NewClient(options.Client().ApplyURI(GetEnv("DB_URI")))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,9 +41,10 @@ func GetCollection(client *mongo.Client, collectionName string) *mongo.Collectio
 	return client.Database("gatorSubleasing").Collection(collectionName)
 }
 
-func getEnv(key string) string {
-	err := godotenv.Load(".env")
+func GetEnv(key string) string {
+	err := godotenv.Load()
 	if err != nil {
+		log.Fatal(err)
 		log.Fatal("Error loading .env file")
 		panic(err)
 	}

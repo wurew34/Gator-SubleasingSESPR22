@@ -28,6 +28,7 @@ import {
     CardMedia,
   } from "@mui/material";
   
+  
 class Listings extends React.Component{
 
     state = {
@@ -37,9 +38,9 @@ class Listings extends React.Component{
           "title": "Aero on 24th",
           "src": [
               "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80",
-              "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80",
-              "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80",
-              "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80"
+              "https://leasingkc.com/wp-content/uploads/2018/12/IMG_0873.jpg",
+              "https://i.ytimg.com/vi/RfYc0BUqkMs/maxresdefault.jpg",
+              "https://www.irvinecompanyapartments.com/rental-living/wp-content/uploads/2020/04/apartment-kitchen-decorating.jpg"
             ],
             
           

@@ -2,10 +2,10 @@
 
 ## Group Members:
 
-- Munish Tanwar
-- Shreyas Kalikar
-- Amol Sinha
-- Jackson Wu
+- Munish Tanwar - Backend
+- Shreyas Kalikar -Frontend
+- Amol Sinha - Backend
+- Jackson Wu - Frontend
 
 ## Tech Stack:
 

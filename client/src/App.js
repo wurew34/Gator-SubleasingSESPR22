@@ -1,22 +1,29 @@
 import React from "react";
 import "./App.css";
 import { Layout, Content } from "react-mdl";
-import { Link } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import logo from "./components/Images/container logo.PNG";
-import Main from "./main";
-import { createTheme } from "@mui/system";
-
+import { Routes, Route } from "react-router-dom";
+import Dashboard from "./components/dashboard";
+import Landing from "./components/landing";
+import Login from "./components/login";
+import Signup from "./components/signup";
+import Profile from "./components/profile";
+import Listing from "./components/listings";
+import CreateLease from "./components/Lease/createLease";
 function App() {
   return (
-    <div className="heading">
+    <div data-test-id="app-1" className="heading">
       <Layout>
         <Content>
           <div className="page-content" />
-          <Main />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/create-listing" element={<CreateLease />} />
+            <Route path="/sublease/:lease_id" element={<Listing />} />
+          </Routes>
         </Content>
       </Layout>
     </div>
