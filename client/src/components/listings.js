@@ -10,16 +10,21 @@ class Listings extends React.Component{
       products: [
         {
           "_id": "1",
-          "title": "Apartment for lease at Gainesville Place Apartments!",
+          "title": "Aero on 24th",
           "src": [
               "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80",
               "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80",
               "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80",
               "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80"
             ],
-          "description": "Sample text",
-          "content": "Sample description",
-          "price": 0,
+            
+          
+          "bedrooms": 2,
+          "bathrooms": 2,
+          "location": "3658 SW 24th Ave, Gainesville, FL 32607",
+          "description": "Near CVS",
+          
+          "price": 800,
           
           "count": 1
         }
@@ -47,25 +52,29 @@ class Listings extends React.Component{
     render(){
       const {products, index} = this.state;
       return(
-        <div className="app">
+          
+            
+        <div className="app" style={{backgroundColor: 'white'}}>
           {
-            products.map(item =>(
-              <div className="details" key={item._id}>
-                <div className="big-img">
-                  <img src={item.src[index]} alt=""/>
+            products.map(sublease =>(
+              <div className="details" key={sublease._id}  >
+                <div className="big-img" >
+                  <img src={sublease.src[index]} alt=""/>
                 </div>
   
-                <div className="box">
-                  <div className="row">
-                    <h2>{item.title}</h2>
-                    <span>sample</span>
+                <div className="box" >
+                  <div className="row" >
+                    <h2>{sublease.title}</h2>
+                    <span>Rent: ${sublease.price}</span>
                   </div>
+                  <p>Bathrooms: {sublease.bathrooms}</p>
+                  <p>Bedrooms: {sublease.bedrooms}</p>
+                  <p>Location: {sublease.location}</p>
+  
+                  <p>{sublease.description}</p>
                   
   
-                  <p>{item.description}</p>
-                  <p>{item.content}</p>
-  
-                  <DetailsThumb images={item.src} tab={this.handleTab} myRef={this.myRef} />
+                  <DetailsThumb images={sublease.src} tab={this.handleTab} myRef={this.myRef} />
                   
   
                 </div>
@@ -73,6 +82,7 @@ class Listings extends React.Component{
             ))
           }
         </div>
+        
       );
     };
   }
