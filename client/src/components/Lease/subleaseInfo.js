@@ -24,7 +24,7 @@ const SubleaseInfo = ({ sublease }) => {
           <img src={mockImage} alt="mock" />{" "}
         </CardMedia>
         <CardContent>
-          <Typography>{sublease?.description}</Typography>
+          <Typography>{sublease?.title}</Typography>
           <Typography>{sublease?.price}</Typography>
         </CardContent>
       </Card>
