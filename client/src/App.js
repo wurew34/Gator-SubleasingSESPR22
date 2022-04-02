@@ -7,7 +7,7 @@ import Landing from "./components/landing";
 import Login from "./components/login";
 import Signup from "./components/signup";
 import Profile from "./components/profile";
-import Listing from "./components/listing";
+import Listing from "./components/listings";
 import CreateLease from "./components/Lease/createLease";
 function App() {
   return (
