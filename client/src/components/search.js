@@ -63,6 +63,7 @@ const Search = (props) => {
               {...params}
               placeholder="Search for properties..."
               fullWidth
+              aria-label="search-bar"
               required
               className={classes.input}
               onChange={(e) => {
