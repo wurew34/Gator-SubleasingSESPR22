@@ -10,13 +10,13 @@ import {
   Autocomplete,
   Pagination,
   PaginationItem,
-  Avatar,
   CssBaseline,
   IconButton,
   Tooltip,
   CardMedia,
   InputLabel,
 } from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Select from "react-select";
 import logo from "./Images/container logo.PNG";
 import mockImage from "./Images/Initial Logo.PNG";
@@ -220,7 +220,7 @@ const Dashboard = () => {
                   navigate("/profile");
                 }}
               >
-                <Avatar>T</Avatar>
+                <AccountCircleIcon fontSize="large" sx={{ color: "white" }}/>
               </IconButton>
             </Tooltip>
             <Button

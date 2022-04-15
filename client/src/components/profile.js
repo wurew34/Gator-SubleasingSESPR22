@@ -16,8 +16,16 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 let endpoint = "http://localhost:8080";
+
+const paperStyle = {
+  padding: 20,
+  height: "70vh",
+  width: 500,
+  borderRadius: "10px",
+};
 
 const Profile = (props) => {
   const decoded = jwt_decode(localStorage.getItem("token"));
@@ -47,9 +55,11 @@ const Profile = (props) => {
     return (
       <div>
         <Typography variant="h4">Profile Settings</Typography>
+        <Typography variant="h6">Name:</Typography>
         <Typography variant="h5">
           {firstName} {lastName}
         </Typography>
+        <Typography variant="h6">Email:</Typography>
         <Typography variant="h5">{email}</Typography>
       </div>
     );
@@ -64,19 +74,9 @@ const Profile = (props) => {
               <img src={logo} alt="logo" />
             </a>
           </Box>
-        </Toolbar>
-      </AppBar>
-
-      <Grid item xs={12}>
-        <Grid container spacing={10}>
-          <Grid
-            item
-            xs={12}
-            sx={{ margin: 10 }}
-            style={{ textAlign: "center" }}
-          >
-            {displayUser()}
-            <Button
+          <Button
+              color="primary"
+              variant="raised"
               onClick={() => {
                 localStorage.removeItem("token");
                 navigate("/login");
@@ -84,6 +84,19 @@ const Profile = (props) => {
             >
               Logout
             </Button>
+        </Toolbar>
+      </AppBar>
+
+      <Grid item xs={12}>
+        <Grid container justify="flex-end">
+          <Grid
+            item
+            xs={12}
+            sx={{ margin: 10 }}
+          >
+            <Paper style={paperStyle}>
+            {displayUser()}
+            </Paper>
           </Grid>
         </Grid>
       </Grid>
