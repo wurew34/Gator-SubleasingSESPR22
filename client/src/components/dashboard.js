@@ -98,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     display: "flex",
     borderRadius: 4,
+    marginLeft: 500,
   },
   container: {
     paddingLeft: "50px",
@@ -246,14 +247,17 @@ const Dashboard = () => {
           Create Listing
         </Button>
         <Search setQuery={(search) => setSearchQuery(search)} />
-        <FormControl sx={{ marginLeft: 50 }} className={classes.root}>
+        <form data-testid="sort-by" className={classes.root}>
           <Select
             placeholder="Sort by..."
             value={sort}
+            name="sort"
+            aria-label="sort"
+            inputId="sort"
             onChange={handleChange}
             options={data}
           />
-        </FormControl>
+        </form>
       </Grid>
       <Paper
         elevation={5}
