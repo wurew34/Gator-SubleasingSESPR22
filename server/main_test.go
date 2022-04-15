@@ -25,6 +25,9 @@ import (
 var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 418c97d354b1c5fc26a267f2fb60674859cb4f85
 func init_test_user() {
 	// Test User for SignUp
 	r := gin.Default()
@@ -55,8 +58,15 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 78261778f2e0295979902d5df45d255bd5676e58
+=======
+
+var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
+
+
+>>>>>>> 418c97d354b1c5fc26a267f2fb60674859cb4f85
 func Test_SignUp(t *testing.T) {
 
 	r := gin.Default()
@@ -86,6 +96,10 @@ func Test_SignUp(t *testing.T) {
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
 	// drop_User(test_user1)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 418c97d354b1c5fc26a267f2fb60674859cb4f85
 }
 
 func Test_Login(t *testing.T) {
@@ -115,8 +129,12 @@ func Test_Login(t *testing.T) {
 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
 	// drop_User(test_user1)
+<<<<<<< HEAD
 =======
 >>>>>>> 78261778f2e0295979902d5df45d255bd5676e58
+=======
+
+>>>>>>> 418c97d354b1c5fc26a267f2fb60674859cb4f85
 }
 
 
