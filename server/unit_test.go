@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	// "os"
+
 	"testing"
 	"time"
 
@@ -25,7 +25,6 @@ import (
 var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
 var testLeaseCollection *mongo.Collection = configs.GetCollection(configs.DB, "leases")
 
-//create a global string to store the user id
 var UserId string
 var LeaseId string
 
