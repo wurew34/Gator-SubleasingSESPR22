@@ -34,18 +34,18 @@ type Location struct {
 // 	Updated_at time.Time          `json:"updated_at,omitempty" bson:"updated_at,omitempty"`
 // }
 
-type Image struct {
-	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Author      string             `json:"author,omitempty" bson:"author,omitempty"`
-	Caption     string             `json:"caption,omitempty" bson:"caption,omitempty"`
-	ContentType string             `json:"contentType,omitempty" bson:"contentType,omitempty"`
-	DateTime    string             `json:"dateTime,omitempty" bson:"dateTime,omitempty"`
-	FileID      primitive.ObjectID `json:"fileID,omitempty" bson:"fileID,omitempty"`
-	FileSize    int64              `json:"fileSize,omitempty" bson:"fileSize,omitempty"`
-	Height      int                `json:"height,omitempty" bson:"height,omitempty"`
-	Name        string             `json:"name,omitempty" bson:"name,omitempty"`
-	Width       int                `json:"width,omitempty" bson:"width,omitempty"`
-}
+// type Image struct {
+// 	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+// 	Author      string             `json:"author,omitempty" bson:"author,omitempty"`
+// 	Caption     string             `json:"caption,omitempty" bson:"caption,omitempty"`
+// 	ContentType string             `json:"contentType,omitempty" bson:"contentType,omitempty"`
+// 	DateTime    string             `json:"dateTime,omitempty" bson:"dateTime,omitempty"`
+// 	FileID      primitive.ObjectID `json:"fileID,omitempty" bson:"fileID,omitempty"`
+// 	FileSize    int64              `json:"fileSize,omitempty" bson:"fileSize,omitempty"`
+// 	Height      int                `json:"height,omitempty" bson:"height,omitempty"`
+// 	Name        string             `json:"name,omitempty" bson:"name,omitempty"`
+// 	Width       int                `json:"width,omitempty" bson:"width,omitempty"`
+// }
 
 //message data structure
 // type Message struct {
@@ -71,5 +71,19 @@ type Lease struct {
 	Location    Location           `json:"location,omitempty"`
 	Created_at  time.Time          `json:"created_at,omitempty"`
 	Updated_at  time.Time          `json:"updated_at,omitempty"`
-	Images      Image              `json:"images,omitempty"`
+	Images      []Image            `json:"images,omitempty"`
+}
+
+type Image struct {
+	ID          primitive.ObjectID `bson:"_id"`
+	user_id     string             `bson:"user_id"`
+	Caption     string             `bson:"caption"`
+	ContentType string             `bson:"contentType"`
+	Created_at  time.Time          `bson:"created_at"`
+	Updated_at  time.Time          `bson:"updated_at"`
+	FileID      primitive.ObjectID `bson:"fileID"`
+	FileSize    int64              `bson:"fileSize"`
+	Height      int                `bson:"height"`
+	Name        string             `bson:"name"`
+	Width       int                `bson:"width"`
 }
