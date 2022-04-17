@@ -39,5 +39,19 @@ type Lease struct {
 	Location    Location           `json:"location,omitempty"`
 	Created_at  time.Time          `json:"created_at,omitempty"`
 	Updated_at  time.Time          `json:"updated_at,omitempty"`
-	Images      []string           `json:"images,omitempty"`
+	Images      []Image            `json:"images,omitempty"`
+}
+
+type Image struct {
+	ID          primitive.ObjectID `bson:"_id"`
+	user_id     string             `bson:"user_id"`
+	Caption     string             `bson:"caption"`
+	ContentType string             `bson:"contentType"`
+	Created_at  time.Time          `bson:"created_at"`
+	Updated_at  time.Time          `bson:"updated_at"`
+	FileID      primitive.ObjectID `bson:"fileID"`
+	FileSize    int64              `bson:"fileSize"`
+	Height      int                `bson:"height"`
+	Name        string             `bson:"name"`
+	Width       int                `bson:"width"`
 }
