@@ -10,4 +10,5 @@ func LeaseRoute(router *gin.Engine) {
 	router.GET("/api/lease/:leaseId", controller.GetLeaseById())
 	router.GET("/api/lease", controller.GetLeases())
 	router.GET("/api/all_leases", controller.GetAllLeases())
+	router.GET("/api/user_leases/:user_id", controller.GetUserLeases())
 }
