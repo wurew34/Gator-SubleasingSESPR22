@@ -28,7 +28,7 @@ const SubleaseInfo = ({ sublease }) => {
         </CardMedia>
         <CardContent>
           <Typography>{sublease?.title}</Typography>
-          <Typography>{sublease?.price}</Typography>
+          <Typography>$ {sublease?.price}.00</Typography>
         </CardContent>
       </Card>
     </div>
