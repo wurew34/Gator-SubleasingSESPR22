@@ -101,6 +101,38 @@ func CreateUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, resultInsertionNumber)
 	}
 }
+func UpdateUser() gin.HandlerFunc {
+
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		var user models.User
+		if err := c.BindJSON(&user); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		validationErr := validate.Struct(user)
+		if validationErr != nil {
+			log.Panic("Validation Error: ", validationErr)
+			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
+			return
+		}
+
+		filter := bson.M{"user_id": user.User_id}
+		update := bson.M{"$set": bson.M{"first_name": user.First_name, "last_name": user.Last_name, "email": user.Email, "updated_at": user.Updated_at}}
+		updateResult, err := userCollection.UpdateOne(ctx, filter, update)
+		if err != nil {
+
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while updating user"})
+			return
+		}
+		defer cancel()
+
+		c.JSON(http.StatusOK, updateResult)
+	}
+
+}
 
 func LoginUser() gin.HandlerFunc {
     return func(c *gin.Context) {
