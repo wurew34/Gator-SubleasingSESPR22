@@ -86,6 +86,7 @@ const MyListings = (props) => {
         <Paper
           sx={{ marginTop: 10, padding: 10, paddingLeft: 4, paddingRight: 4 }}
         >
+          <h1>My Listings</h1>
           {displayListings()}
         </Paper>
       </div>
