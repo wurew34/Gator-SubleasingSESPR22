@@ -36,6 +36,7 @@ import { makeStyles } from "@mui/styles";
 import AppPagination from "./pagination";
 import SubleaseInfo from "./Lease/subleaseInfo";
 import { borderRadius } from "@mui/system";
+import MyListings from "./mylistings";
 
 // let endpoint = "http://localhost:8080";
 
@@ -246,7 +247,7 @@ const Dashboard = () => {
                   <Link to="/profile">Profile</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <Link to="/">My Listings</Link>
+                  <Link to="/mylistings">My Listings</Link>
                 </MenuItem>
               </Menu>
             </div>
