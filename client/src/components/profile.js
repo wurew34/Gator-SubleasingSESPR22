@@ -40,6 +40,7 @@ const Profile = (props) => {
   const [firstName, setFirstName] = React.useState(decoded.First_name);
   const [lastName, setLastName] = React.useState(decoded.Last_name);
   const [email, setEmail] = React.useState(decoded.Email);
+  const [password, setPassword] = React.useState("");
   console.log(decoded);
 
   let navigate = useNavigate();
@@ -51,19 +52,29 @@ const Profile = (props) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.password);
+        setPassword(res.data.password);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   const editUser = () => {
+    axios.defaults.headers.common["Authorization"] =
+      "Bearer " + localStorage.getItem("token");
+
     axios
-      .post(endpoint + "/api/user", {
+      .put(endpoint + "/api/user", {
         first_name: firstName,
         last_name: lastName,
         email: email,
+        password: password,
+        user_id: decoded.user_id,
       })
       .then((res) => {
         console.log(res.data);
@@ -75,7 +86,6 @@ const Profile = (props) => {
 
   //edit profile
   const editProfile = () => {
-    editUser();
     return (
       <div>
         <AppBar position="static">
@@ -125,7 +135,7 @@ const Profile = (props) => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => editProfile()}
+                onClick={() => editUser()}
               >
                 Save
               </Button>
