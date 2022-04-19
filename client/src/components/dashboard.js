@@ -10,13 +10,15 @@ import {
   Autocomplete,
   Pagination,
   PaginationItem,
-  Avatar,
   CssBaseline,
   IconButton,
   Tooltip,
   CardMedia,
   InputLabel,
+  Menu,
+  MenuItem,
 } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Select from "react-select";
 import logo from "./Images/container logo.PNG";
 import mockImage from "./Images/Initial Logo.PNG";
@@ -34,6 +36,7 @@ import { makeStyles } from "@mui/styles";
 import AppPagination from "./pagination";
 import SubleaseInfo from "./Lease/subleaseInfo";
 import { borderRadius } from "@mui/system";
+import MyListings from "./mylistings";
 
 // let endpoint = "http://localhost:8080";
 
@@ -175,6 +178,15 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(5);
   const [search, setSearchQuery] = useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const [sort, setSort] = useState("");
   const handleChange = (obj) => {
@@ -214,15 +226,31 @@ const Dashboard = () => {
                 <img src={logo} alt="logo" />
               </a>
             </Box>
-            <Tooltip title="Profile">
+            <div>
               <IconButton
-                onClick={() => {
-                  navigate("/profile");
-                }}
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleClick}
+                color="inherit"
               >
-                <Avatar>T</Avatar>
+                <AccountCircleIcon fontSize="large" sx={{ color: "white" }} />
               </IconButton>
-            </Tooltip>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>
+                  <Link to="/profile">Profile</Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link to="/mylistings">My Listings</Link>
+                </MenuItem>
+              </Menu>
+            </div>
             <Button
               color="primary"
               variant="raised"

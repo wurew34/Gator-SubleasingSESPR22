@@ -6,6 +6,8 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import logo from "../Images/container logo.PNG";
 import Toolbar from "@mui/material/Toolbar";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 import {
   Grid,
   Card,
@@ -110,7 +112,7 @@ export default function CreateLease(props) {
                   navigate("/profile");
                 }}
               >
-                <Avatar>T</Avatar>
+                <AccountCircleIcon fontSize="large" sx={{ color: "white" }}/>
               </IconButton>
             </Tooltip>
             <Button
