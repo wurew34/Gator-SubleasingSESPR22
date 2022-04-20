@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Grid, Paper, TextField, Button, Typography } from "@mui/material";
 import logo from "./Images/container logo.PNG";
 import "./styles.css";
@@ -8,7 +8,7 @@ import ParticleBackground from "../ParticleBackground";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-let endpoint = "https://sleepy-spire-27532.herokuapp.com";
+let endpoint = "http://localhost:8080";
 
 const Login = (props) => {
   const [email, setEmail] = React.useState("");
