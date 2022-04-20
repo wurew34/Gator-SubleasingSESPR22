@@ -8,7 +8,7 @@ import ParticleBackground from "../ParticleBackground";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-let endpoint = "http://localhost:8080";
+let endpoint = "https://sleepy-spire-27532.herokuapp.com";
 
 const Login = (props) => {
   const [email, setEmail] = React.useState("");

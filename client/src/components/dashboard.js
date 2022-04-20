@@ -1,32 +1,20 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid,
-  FormControl,
-  CardContent,
   Paper,
-  TextField,
   Button,
-  Typography,
-  Autocomplete,
-  Pagination,
-  PaginationItem,
   CssBaseline,
   IconButton,
-  Tooltip,
-  CardMedia,
-  InputLabel,
   Menu,
   MenuItem,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Select from "react-select";
 import logo from "./Images/container logo.PNG";
-import mockImage from "./Images/Initial Logo.PNG";
 import "./styles.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -35,9 +23,6 @@ import Search from "./search";
 import { makeStyles } from "@mui/styles";
 import AppPagination from "./pagination";
 import SubleaseInfo from "./Lease/subleaseInfo";
-import { borderRadius } from "@mui/system";
-import MyListings from "./mylistings";
-
 // let endpoint = "http://localhost:8080";
 
 // const Dashboard = (props) => {
