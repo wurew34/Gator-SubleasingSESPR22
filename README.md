@@ -27,3 +27,6 @@ Gainesville has a very diverse housing market that encompasses many distinct hou
 - Users can navigate to their "My Listings" page to to update and delete listings that were made by themselves.
 - Users can navigate to their "Profile" page to update their personal information (name and e-mail).
 - Users can use the sorting feature to expand additional filters for users to search by price, location, term of sublease.
+
+## Frontend Testing
+https://user-images.githubusercontent.com/45046355/164324756-e1ffd634-713e-4655-b2a0-3ace2b2afca7.mp4
