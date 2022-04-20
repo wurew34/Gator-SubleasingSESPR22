@@ -9,6 +9,7 @@ func TestRoute(router *gin.Engine) {
 	router.POST("/api/test/users/signup", controller.CreateUser())
 	router.POST("/api/test/users/login", controller.LoginUser())
 	router.GET("/api/test/user", controller.GetUser())
+	router.PUT("/api/test/user", controller.UpdateUser())
 	router.POST("/api/test/lease/create", controller.CreateLease())
 	router.PUT("/api/test/lease/:leaseId", controller.UpdateLease())
 	router.DELETE("/api/test/lease/:leaseId", controller.DeleteLease())
@@ -16,4 +17,6 @@ func TestRoute(router *gin.Engine) {
 	router.GET("/api/test/lease/:leaseId", controller.GetLeaseById())
 	router.GET("/api/test/lease", controller.GetLeases())
 	router.GET("/api/test/all_leases", controller.GetAllLeases())
+	router.GET("/api/test/user_leases/:user_id", controller.GetUserLeases())
+
 }
