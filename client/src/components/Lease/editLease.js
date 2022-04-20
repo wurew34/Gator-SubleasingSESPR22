@@ -1,8 +1,13 @@
-import { Paper, Grid, Button, TextField, Typography } from "@mui/material";
+import React from "react";
+import { Paper, Grid, Button, TextField, Snackbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import MuiAlert from "@mui/material/Alert";
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 //modal for the lease edit
 const EditLease = ({ sublease }) => {
   const navigate = useNavigate();
