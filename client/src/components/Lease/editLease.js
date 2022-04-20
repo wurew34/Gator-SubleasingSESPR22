@@ -1,18 +1,23 @@
-import { Paper, Grid, Button, TextField, Typography } from "@mui/material";
+import React from "react";
+import { Paper, Grid, Button, TextField, Snackbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import MuiAlert from "@mui/material/Alert";
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 //modal for the lease edit
 const EditLease = ({ sublease }) => {
   const navigate = useNavigate();
-  const [address, setAddress] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState();
-  const [bedrooms, setBedrooms] = useState();
-  const [bathrooms, setBathrooms] = useState();
-  const [term, setTerm] = useState();
+  const [address, setAddress] = useState(sublease.address);
+  const [title, setTitle] = useState(sublease.title);
+  const [description, setDescription] = useState(sublease.description);
+  const [price, setPrice] = useState(sublease.price);
+  const [bedrooms, setBedrooms] = useState(sublease.bedrooms);
+  const [bathrooms, setBathrooms] = useState(sublease.bathrooms);
+  const [term, setTerm] = useState(sublease.term);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,8 +31,11 @@ const EditLease = ({ sublease }) => {
       description: description,
       Address: address,
       title: title,
+      user_id: sublease.user_id,
+      lease_id: sublease._id,
     };
     console.log(changeLease);
+    console.log(sublease._id);
     axios.defaults.headers.common["Authorization"] =
       "Bearer " + localStorage.getItem("token");
 
@@ -35,7 +43,7 @@ const EditLease = ({ sublease }) => {
       .put(`http://localhost:8080/api/lease/${sublease._id}`, changeLease)
       .then((res) => {
         console.log(res.data);
-        navigate("/mylistings");
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);

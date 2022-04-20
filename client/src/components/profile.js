@@ -8,6 +8,7 @@ import {
   Box,
   Toolbar,
   Divider,
+  Snackbar,
 } from "@mui/material";
 import logo from "./Images/container logo.PNG";
 import "./styles.css";
@@ -18,6 +19,7 @@ import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MuiAlert from "@mui/material/Alert";
 
 let endpoint = "http://localhost:8080";
 
@@ -35,12 +37,25 @@ const paperStyle1 = {
   borderRadius: "10px",
 };
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Profile = (props) => {
   const decoded = jwt_decode(localStorage.getItem("token"));
   const [firstName, setFirstName] = React.useState(decoded.First_name);
   const [lastName, setLastName] = React.useState(decoded.Last_name);
   const [email, setEmail] = React.useState(decoded.Email);
+  const [password, setPassword] = React.useState("");
+  const [open, setOpen] = React.useState(false);
   console.log(decoded);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
   let navigate = useNavigate();
   const fetchUser = () => {
@@ -51,19 +66,34 @@ const Profile = (props) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.password);
+        setPassword(res.data.password);
+        setFirstName(res.data.first_name);
+        setLastName(res.data.last_name);
+        setEmail(res.data.email);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   const editUser = () => {
+    setOpen(true);
+
+    axios.defaults.headers.common["Authorization"] =
+      "Bearer " + localStorage.getItem("token");
+
     axios
-      .post(endpoint + "/api/user", {
+      .put(endpoint + "/api/user", {
         first_name: firstName,
         last_name: lastName,
         email: email,
+        password: password,
+        user_id: decoded.user_id,
       })
       .then((res) => {
         console.log(res.data);
@@ -75,7 +105,6 @@ const Profile = (props) => {
 
   //edit profile
   const editProfile = () => {
-    editUser();
     return (
       <div>
         <AppBar position="static">
@@ -85,7 +114,7 @@ const Profile = (props) => {
                 <AccountCircleIcon />
               </Grid>
               <Grid item>
-                <Typography variant="h6">{decoded.First_name}</Typography>
+                <Typography variant="h6">Welcome!</Typography>
               </Grid>
             </Grid>
           </Toolbar>
@@ -125,10 +154,23 @@ const Profile = (props) => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => editProfile()}
+                onClick={() => editUser()}
               >
                 Save
               </Button>
+              <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="success"
+                  sx={{ width: "100%" }}
+                >
+                  Successfully updated your profile!
+                </Alert>
+              </Snackbar>
             </Box>
           </Grid>
         </Grid>
