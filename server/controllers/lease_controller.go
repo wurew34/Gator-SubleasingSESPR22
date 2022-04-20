@@ -430,3 +430,37 @@ func GetLeases() gin.HandlerFunc {
 	}
 
 }
+
+func UploadLeaseImage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+
+		file, err := c.FormFile("image")
+		if err != nil {
+			log.Fatal("Error getting the file: ", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		// defer file.Close()
+		fileBytes, err := file.Open()
+		if err != nil {
+			log.Fatal("Error reading the file: ", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		leaseId := c.Param("leaseId")
+		fmt.Print("lease id: ", leaseId)
+
+		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"lease_id": leaseId}, bson.M{"$set": bson.M{"image": fileBytes}}); err != nil {
+
+			log.Fatal("Error updating the lease: ", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "lease image uploaded"})
+
+	}
+
+}
