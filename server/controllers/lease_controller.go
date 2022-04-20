@@ -128,6 +128,7 @@ func CreateLease() gin.HandlerFunc {
 
 func UpdateLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		fmt.Print("Hi this is update lease")
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		givenLeaseId := c.Param("leaseId")
@@ -155,7 +156,7 @@ func UpdateLease() gin.HandlerFunc {
 		lease.Location.Coordinates = []float64{lng, lat}
 		lease.Location.Type = "Point"
 		// lease.Lease_id = givenLeaseId
-
+		fmt.Print("lease id: ", givenLeaseId)
 		userId, exists := c.Get("uid")
 		if !exists {
 			if userId != "" {
@@ -182,6 +183,7 @@ func UpdateLease() gin.HandlerFunc {
 
 		lease.User_id = userId.(string)
 		lease.Updated_at = time.Now()
+		fmt.Print("user id: ", userId)
 
 		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"lease_id": lease.Lease_id}, bson.M{"$set": lease}); err != nil {
 			log.Fatal("Error updating the lease: ", err)

@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Paper, Typography } from "@mui/material";
-import { Card } from "@mui/material";
+import { Paper, Typography, Tooltip, Card, IconButton } from "@mui/material";
 import "./listings.css";
 import Colors from "./Colors";
 import DetailsThumb from "./DetailsThumb";
@@ -11,6 +10,9 @@ import logo from "./Images/container logo.PNG";
 import Toolbar from "@mui/material/Toolbar";
 import ParticleBackground from "../ParticleBackground";
 import { useLocation } from "react-router-dom";
+import MailIcon from '@mui/icons-material/Mail';
+import { useNavigate } from "react-router-dom";
+
 const Listings = (props) => {
   const imgsrc = [
     "https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8YXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&w=1000&q=80",
@@ -23,6 +25,7 @@ const Listings = (props) => {
   const { state } = useLocation();
   const sublease = state.sublease;
   const [search, setSearch] = useState("");
+  let navigate = useNavigate();
 
   const ViewImage = ({images}) => {
     return (
@@ -71,8 +74,20 @@ const Listings = (props) => {
             <p>Bathrooms: {sublease.bathrooms}</p>
             <p>Bedrooms: {sublease.bedrooms}</p>
             <ViewImage images={imgsrc} />
+            <div className="mailIcon">
+            <Tooltip title="Contact Seller">
+              <IconButton
+                onClick={() => {
+                  navigate("/profile");
+                }}
+              >
+                <MailIcon/>
+              </IconButton>
+            </Tooltip>
+            </div>
           </div>
         </div>
+       
       </div>
     </div>
   );
