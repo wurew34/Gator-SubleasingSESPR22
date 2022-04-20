@@ -28,6 +28,16 @@ Gainesville has a very diverse housing market that encompasses many distinct hou
 - Users can navigate to their "Profile" page to update their personal information (name and e-mail).
 - Users can use the sorting feature to expand additional filters for users to search by price, location, term of sublease.
 
+## Links for Documentation:
+
+### [Link to API Documentation](https://github.com/wurew34/Gator-SubleasingSESPR22/wiki/Backend-Documentation)
+
+### [Link to Project Board](https://github.com/wurew34/Gator-SubleasingSESPR22/projects)
+
+### [Link to Sprint 4 Documentation]()
+
+
+
 ## Video Demo
 
 https://user-images.githubusercontent.com/45046355/164336602-cd69f467-a00e-4799-8214-c1ed9e30b389.mp4

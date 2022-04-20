@@ -21,8 +21,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-
-	// "go.mongodb.org/mongo-driver/mongo/gridfs"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -73,48 +71,6 @@ func CreateLease() gin.HandlerFunc {
 		lease.Created_at = time.Now()
 		lease.Updated_at = time.Now()
 
-		//store image in gridfs
-		// file, err := c.FormFile("image")
-		// if err != nil {
-		// 	log.Fatal("Error getting the image: ", err)
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
-		// //get the file name
-		// fileName := file.Filename
-		// //get the file size
-		// fileSize := file.Size
-		// //get the file content
-		// fileContent, err := file.Open()
-		// if err != nil {
-		// 	log.Fatal("Error getting the file content: ", err)
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-		// defer fileContent.Close()
-
-		// //create a bucket
-		// bucket, err := gridfs.NewBucket(configs.DB.Database("gatorSubleasing"))
-		// if err != nil {
-		// 	log.Fatal("Error creating the bucket: ", err)
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
-		// //create a file
-		// fileId, err := bucket.UploadFromStream(fileName, fileContent, options.GridFSUpload().SetMetadata(map[string]interface{}{"user_id": userId.(string)}))
-		// if err != nil {
-		// 	log.Fatal("Error creating the file: ", err)
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
-		// lease.Images.ID = fileId
-		// lease.Images.Author = fileName
-		// lease.Images.FileSize = fileSize
-
-		//insert the lease
 
 		if _, err := leaseCollection.InsertOne(ctx, lease); err != nil {
 			log.Fatal("Error inserting the lease: ", err)
