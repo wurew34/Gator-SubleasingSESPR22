@@ -20,7 +20,7 @@ func main() {
 	corsConfig := cors.Config{
 		AllowAllOrigins:  false,
 		AllowCredentials: true,
-		AllowOrigins:     []string{"http://localhost:3000", "https://peaceful-gumption-f28d2f.netlify.app/"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://peaceful-gumption-f28d2f.netlify.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "accept", "token"},
 	}
