@@ -2,13 +2,14 @@ package helper
 
 import (
 	"log"
-	"os"
+	// "os"
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/google"
+	"github.com/wurew34/Gator-SubleasingSESPR22/configs"
 )
 
 func SetUpGeocode() geo.Geocoder {
-	geo := google.Geocoder(os.Getenv("GEO_API"))
+	geo := google.Geocoder(configs.GetEnv("GEO_API"))
 	return geo
 }
 
