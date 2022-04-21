@@ -21,9 +21,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-
-	//import gridfs
-	// "go.mongodb.org/mongo-driver/mongo/gridfs"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -74,6 +71,7 @@ func CreateLease() gin.HandlerFunc {
 		lease.Created_at = time.Now()
 		lease.Updated_at = time.Now()
 
+
 		if _, err := leaseCollection.InsertOne(ctx, lease); err != nil {
 			log.Fatal("Error inserting the lease: ", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -86,6 +84,7 @@ func CreateLease() gin.HandlerFunc {
 
 func UpdateLease() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		fmt.Print("Hi this is update lease")
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
 		givenLeaseId := c.Param("leaseId")
@@ -113,7 +112,7 @@ func UpdateLease() gin.HandlerFunc {
 		lease.Location.Coordinates = []float64{lng, lat}
 		lease.Location.Type = "Point"
 		// lease.Lease_id = givenLeaseId
-
+		fmt.Print("lease id: ", givenLeaseId)
 		userId, exists := c.Get("uid")
 		if !exists {
 			if userId != "" {
@@ -140,6 +139,7 @@ func UpdateLease() gin.HandlerFunc {
 
 		lease.User_id = userId.(string)
 		lease.Updated_at = time.Now()
+		fmt.Print("user id: ", userId)
 
 		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"lease_id": lease.Lease_id}, bson.M{"$set": lease}); err != nil {
 			log.Fatal("Error updating the lease: ", err)
@@ -431,6 +431,7 @@ func GetLeases() gin.HandlerFunc {
 
 }
 
+<<<<<<< HEAD
 func UploadLeaseImage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -455,12 +456,53 @@ func UploadLeaseImage() gin.HandlerFunc {
 		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"lease_id": leaseId}, bson.M{"$set": bson.M{"image": fileBytes}}); err != nil {
 
 			log.Fatal("Error updating the lease: ", err)
+=======
+func GetUserLeases() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var leases []models.Lease
+		var filter bson.M
+
+		userID := c.Param("user_id")
+		
+		if userID == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+			return
+		}
+		//print user id
+		filter = bson.M{
+			"user_id": userID,
+		}
+
+		ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+		cursor, err := leaseCollection.Find(ctx, filter)
+		defer cursor.Close(ctx)
+
+		if err != nil {
+			log.Fatal("Error getting the leases: ", err)
+>>>>>>> 4315bea8d16dfec64e11c865d688a67ffaf6f648
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
+<<<<<<< HEAD
 		c.JSON(http.StatusOK, gin.H{"message": "lease image uploaded"})
 
 	}
 
+=======
+		for cursor.Next(ctx) {
+			var lease models.Lease
+			if err := cursor.Decode(&lease); err != nil {
+				log.Fatal("Error decoding the lease: ", err)
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
+			}
+			leases = append(leases, lease)
+		}
+
+		c.JSON(http.StatusOK, leases)
+
+	}
+>>>>>>> 4315bea8d16dfec64e11c865d688a67ffaf6f648
 }

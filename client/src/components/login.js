@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Grid, Paper, TextField, Button, Typography } from "@mui/material";
 import logo from "./Images/container logo.PNG";
 import "./styles.css";

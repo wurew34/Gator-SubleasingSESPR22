@@ -9,7 +9,7 @@
 
 ## Tech Stack:
 
-The web application we wish to move forward with will be an augmented subleasing platform for UF Students. The features we wish to implement include viewing, posting, chat messaging, and possibly web scraping the data off of facebook marketplace. We wish to create a web application using the following:
+The web application we wish to move forward with will be an augmented subleasing platform for UF Students. The features we wish to implement include viewing, posting, editing, and deleting sublease properties from the registered user. We wish to create a web application using the following:
 
 - React
 - JavaScript
@@ -18,10 +18,32 @@ The web application we wish to move forward with will be an augmented subleasing
 - MongoDB
 
 ## Description of features:
+Gainesville has a very diverse housing market that encompasses many distinct housing options. The web platform we have created aims to centralize the subleasing market for students attending the University of Florida. We have implemented the following features that are currently accessible to registered users:
 
-- Implement location-based API for auto-complete search function to find housing to sublease (Can use MapBox or Google Maps API)
-- Create Dashboard/Log-In for Users (Can use JWT)
-- Implement viewing/posting listings
-- Create Interactive Chat Function to message between users
-- Create additional filters for users to search by price, location, term of sublease
-- (Undecided): Implement additional filter for external platforms (webscraping ex. facebook marketplace)
+- Users can search based on the titles of properties that are listed, which includes auto complete functionality. 
+- Users can create listings and have their address filled using auto-complete. The auto-complete function utilizes location-based API to find completed addresses (Using Geocoding API).
+- Users can fully sign up and login to the web platform (utilizing JWT and local storage token). They can access the dashboard which contains all the subleases that are posted.
+- Users can click on a posting to view more details about the sublease property.
+- Users can navigate to their "My Listings" page to to update and delete listings that were made by themselves.
+- Users can navigate to their "Profile" page to update their personal information (name and e-mail).
+- Users can use the sorting feature to expand additional filters for users to search by price, location, term of sublease.
+
+## Links for Documentation:
+
+### [Link to API Documentation](https://github.com/wurew34/Gator-SubleasingSESPR22/wiki/Backend-Documentation)
+
+### [Link to Project Board](https://github.com/wurew34/Gator-SubleasingSESPR22/projects)
+
+### [Link to Sprint 4 Documentation](https://github.com/wurew34/Gator-SubleasingSESPR22/blob/backend-location/Sprint4.md)
+
+
+
+## Video Demo
+
+https://user-images.githubusercontent.com/45046355/164336602-cd69f467-a00e-4799-8214-c1ed9e30b389.mp4
+
+## Frontend Testing
+https://user-images.githubusercontent.com/45046355/164324756-e1ffd634-713e-4655-b2a0-3ace2b2afca7.mp4
+
+## Backend Unit Testing
+https://user-images.githubusercontent.com/59619342/164338917-7c8e6cb6-ed77-48aa-b65a-6f85c5076240.mp4

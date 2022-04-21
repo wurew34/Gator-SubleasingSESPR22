@@ -101,6 +101,59 @@ func CreateUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, resultInsertionNumber)
 	}
 }
+func UpdateUser() gin.HandlerFunc {
+
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		var user models.User
+		var updateUser models.User
+		if err := c.BindJSON(&updateUser); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		userId, exists := c.Get("uid")
+		if !exists {
+			if updateUser.User_id != "" {
+				userId = updateUser.User_id
+				
+				} else {
+				log.Fatal("user id not found")
+				c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+				return
+
+			}
+		}
+		filter := bson.M{"user_id": userId}
+		err := userCollection.FindOne(ctx, filter).Decode(&user)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while finding user"})
+			return
+		}
+
+		validationErr := validate.Struct(user)
+		if validationErr != nil {
+			log.Panic("Validation Error: ", validationErr)
+			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
+			return
+		}
+
+		update := bson.M{"$set": bson.M{"first_name": updateUser.First_name, "last_name": updateUser.Last_name, "email": updateUser.Email, "updated_at": time.Now()}}
+		if _, err := userCollection.UpdateOne(ctx, filter, update); err != nil {
+
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while updating user"})
+			return
+		}
+		defer cancel()
+		err = userCollection.FindOne(ctx, filter).Decode(&user)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error while finding user"})
+			return
+		}
+		c.JSON(http.StatusOK, user)
+	}
+
+}
 
 func LoginUser() gin.HandlerFunc {
     return func(c *gin.Context) {

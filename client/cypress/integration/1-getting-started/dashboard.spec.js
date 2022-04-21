@@ -8,9 +8,22 @@ describe("Dashboard", () => {
   it("contains the app bar", () => {
     cy.get("#app-bar");
     cy.get("img");
-    cy.findByRole("button", { name: /profile/i });
+    cy.findByRole("button", { name: /account of current user/i });
     cy.findByRole("button", { name: /logout/i });
     cy.url().should("include", "dashboard");
+  });
+
+  it("contains options for profile and my listings", () => {
+    cy.findByRole("button", { name: /account of current user/i }).click();
+    cy.findByRole("link", { name: /profile/i });
+    cy.findByRole("link", { name: /my listings/i });
+  });
+
+  it("sublease listing redirects to sublease page", () => {
+    cy.contains("Aero on 24th").click({ force: true });
+    cy.url().should("include", "sublease");
+    cy.contains("Aero on 24th").click({ force: true });
+    cy.url().should("include", "sublease");
   });
 
   it("has a logout option for users", () => {

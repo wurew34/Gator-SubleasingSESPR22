@@ -9,6 +9,7 @@ import Signup from "./components/signup";
 import Profile from "./components/profile";
 import Listing from "./components/listings";
 import CreateLease from "./components/Lease/createLease";
+import MyListings from "./components/mylistings";
 function App() {
   return (
     <div data-test-id="app-1" className="heading">
@@ -23,6 +24,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create-listing" element={<CreateLease />} />
             <Route path="/sublease/:lease_id" element={<Listing />} />
+            <Route path="/mylistings" element={<MyListings />} />
           </Routes>
         </Content>
       </Layout>

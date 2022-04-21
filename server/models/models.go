@@ -24,7 +24,6 @@ type Location struct {
 	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
 }
 
-//create a struct for Lease
 type Lease struct {
 	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	User_id     string             `json:"user_id,omitempty"`

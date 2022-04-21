@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	// "os"
+
 	"testing"
 	"time"
 
@@ -25,13 +25,13 @@ import (
 var testUserCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
 var testLeaseCollection *mongo.Collection = configs.GetCollection(configs.DB, "leases")
 
-//create a global string to store the user id
 var UserId string
 var LeaseId string
 
 func TestMain(m *testing.T) {
 	m.Log("Unit Tests Started")
 	m.Run("Test Signup", Test_SignUp)
+	m.Run("Test UpdateUser", Test_UpdateUser)
 	m.Run("Test Login", Test_Login)
 	m.Run("Test Invalid SignUp", Test_InvalidSignUp)
 	m.Run("Test Invalid Login", Test_InvalidLogin)
@@ -45,6 +45,7 @@ func TestMain(m *testing.T) {
 	m.Run("Test Get Leases by Pagination", Test_GetLeaseByPagination)
 	m.Run("Test Get All Lease", Test_GetAllLeases)
 	m.Run("Test Search Lease", Test_SearchLeases)
+	m.Run("Test Get Lease By User", Test_GetLeaseByUser)
 	m.Run("Test Update Lease", Test_UpdateLease)
 	m.Run("Test Delete Lease", Test_DeleteLease)
 	m.Log("Unit Tests Completed")
@@ -68,7 +69,6 @@ func Test_SignUp(t *testing.T) {
 		Last_name:  &last_name,
 	}
 	reqBody, _ := json.Marshal(test_user1)
-	// req, _ := http.NewRequest(http.MethodPost, "/api/test/users/login", bytes.NewBuffer(reqBody))
 
 	req := httptest.NewRequest(http.MethodPost, "/api/test/users/signup", bytes.NewBuffer(reqBody))
 
@@ -96,7 +96,6 @@ func Test_Login(t *testing.T) {
 		Password: &password,
 	}
 	reqBody, _ := json.Marshal(test_user1)
-	// req, _ := http.NewRequest(http.MethodPost, "/api/test/users/login", bytes.NewBuffer(reqBody))
 	req := httptest.NewRequest(http.MethodPost, "/api/test/users/login", bytes.NewBuffer(reqBody))
 
 	w := httptest.NewRecorder()
@@ -106,6 +105,36 @@ func Test_Login(t *testing.T) {
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
 	drop_User(test_user1)
 
+}
+
+func Test_UpdateUser(t *testing.T) {
+	r := gin.Default()
+	a := assert.New(t)
+	r.PUT("/api/test/user", controller.UpdateUser())
+	
+
+	email := "test@test.com"
+	password := "test1234"
+	first_name := "test_update"
+	last_name := "user"
+	uid := UserId
+	test_user1 := models.User{
+		Email:      &email,
+		Password:   &password,
+		First_name: &first_name,
+		Last_name:  &last_name,
+		User_id:   uid,
+	}
+	reqBody, _ := json.Marshal(test_user1)
+
+	req := httptest.NewRequest(http.MethodPut, "/api/test/user", bytes.NewBuffer(reqBody))
+
+	w := httptest.NewRecorder()
+	req.Header.Set("Content-Type", "application/json")
+
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodPut, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
 }
 
 func Test_InvalidLogin(t *testing.T) {
@@ -123,7 +152,6 @@ func Test_InvalidLogin(t *testing.T) {
 	}
 	reqBody, _ := json.Marshal(test_user1)
 
-	// req, _ := http.NewRequest(http.MethodPost, "/api/test/users/login", bytes.NewBuffer(reqBody))
 	req := httptest.NewRequest(http.MethodPost, "/api/test/users/login", bytes.NewBuffer(reqBody))
 
 	w := httptest.NewRecorder()
@@ -151,8 +179,6 @@ func Test_InvalidSignUp(t *testing.T) {
 		Last_name:  &last_name,
 	}
 	reqBody, _ := json.Marshal(test_user)
-
-	// req, _ := http.NewRequest(http.MethodPost, "/users/test/signup", bytes.NewBuffer(reqBody))
 	req := httptest.NewRequest(http.MethodPost, "/users/test/signup", bytes.NewBuffer(reqBody))
 
 	w := httptest.NewRecorder()
@@ -219,7 +245,7 @@ func Test_CreateLease(t *testing.T) {
 
 	reqBody, _ := json.Marshal(lease)
 
-	// req, _ := http.NewRequest(http.MethodPost, "/api/test/lease/create", bytes.NewBuffer(reqBody))
+
 	req := httptest.NewRequest(http.MethodPost, "/api/test/lease/create", bytes.NewBuffer(reqBody))
 
 	w := httptest.NewRecorder()
@@ -232,7 +258,7 @@ func Test_CreateLease(t *testing.T) {
 
 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
 	a.Equal(http.StatusCreated, w.Code, "HTTP request status code error")
-	// drop_Lease(lease)
+
 }
 
 func Test_UpdateLease(t *testing.T) {
@@ -254,7 +280,7 @@ func Test_UpdateLease(t *testing.T) {
 
 	reqBody, _ := json.Marshal(lease)
 
-	// req, _ := http.NewRequest(http.MethodPost, "/api/test/lease/create", bytes.NewBuffer(reqBody))
+
 	req := httptest.NewRequest(http.MethodPut, "/api/test/lease/"+LeaseId, bytes.NewBuffer(reqBody))
 
 	w := httptest.NewRecorder()
@@ -321,7 +347,7 @@ func Test_GetLease(t *testing.T) {
 	r := gin.Default()
 	a := assert.New(t)
 	r.GET("/api/test/lease", controller.GetLeases())
-	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
+
 	req := httptest.NewRequest(http.MethodGet, "/api/test/lease", nil)
 
 	w := httptest.NewRecorder()
@@ -334,7 +360,7 @@ func Test_GetLeaseBySearchTerm(t *testing.T) {
 	r := gin.Default()
 	a := assert.New(t)
 	r.GET("/api/test/lease", controller.GetLeases())
-	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
+
 	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?s=enclave", nil)
 
 	w := httptest.NewRecorder()
@@ -346,7 +372,7 @@ func Test_GetLeaseBySort(t *testing.T) {
 	r := gin.Default()
 	a := assert.New(t)
 	r.GET("/api/test/lease", controller.GetLeases())
-	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
+
 	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?s=title", nil)
 
 	w := httptest.NewRecorder()
@@ -359,9 +385,7 @@ func Test_GetLeaseByRooms(t *testing.T) {
 	r := gin.Default()
 	a := assert.New(t)
 	r.GET("/api/test/lease", controller.GetLeases())
-	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
 	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?bath=1&bed=1", nil)
-
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
@@ -372,15 +396,29 @@ func Test_GetLeaseByPagination(t *testing.T) {
 	r := gin.Default()
 	a := assert.New(t)
 	r.GET("/api/test/lease", controller.GetLeases())
-	// req, _ := http.NewRequest(http.MethodGet, "/api/test/lease", nil)
 	req := httptest.NewRequest(http.MethodGet, "/api/test/lease?page=2&limit=4", nil)
-
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
 	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
 }
 
+func Test_GetLeaseByUser(t *testing.T) {
+	r := gin.Default()
+	a := assert.New(t)
+	r.GET("/api/test/user_leases/:user_id", controller.GetUserLeases())
+
+	uid := UserId
+	if uid == "" {
+		uid = "6222902b0d4755958bb5bd00"
+	}
+	req := httptest.NewRequest(http.MethodGet, "/api/test/user_leases/"+uid, nil)
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+}
 func Test_DeleteLease(t *testing.T) {
 	r := gin.Default()
 	a := assert.New(t)
