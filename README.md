@@ -34,7 +34,7 @@ Gainesville has a very diverse housing market that encompasses many distinct hou
 
 ### [Link to Project Board](https://github.com/wurew34/Gator-SubleasingSESPR22/projects)
 
-### [Link to Sprint 4 Documentation]()
+### [Link to Sprint 4 Documentation](https://github.com/wurew34/Gator-SubleasingSESPR22/blob/backend-location/Sprint4.md)
 
 
 
