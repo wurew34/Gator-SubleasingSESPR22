@@ -1,9 +1,11 @@
 package main
 
 import (
+	"os"
+	"log"
+	
 	"github.com/gin-gonic/gin"
 	"github.com/wurew34/Gator-SubleasingSESPR22/routes"
-
 	"github.com/gin-contrib/cors"
 )
 
