@@ -8,6 +8,11 @@ import (
 )
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
 	r := gin.New()
 	r.Use(gin.Logger())
 	corsConfig := cors.Config{
@@ -24,7 +29,7 @@ func main() {
 	routes.LeaseRoute(r)
 	routes.TestRoute(r)
 	routes.UserRoute(r)
-	r.Run("localhost:8080")
+	r.Run(":" + port)
 }
 
 //go build -o new -v -> go run main.go
