@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
-let endpoint = "http://localhost:8080";
+let endpoint = "https://sleepy-spire-27532.herokuapp.com";
 
 const Signup = (props) => {
   const [email, setEmail] = React.useState("");

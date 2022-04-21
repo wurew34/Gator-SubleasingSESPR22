@@ -25,7 +25,7 @@ import MySubleaseInfo from "./Lease/mySubleaseInfo";
 
 const MyListings = (props) => {
   //list of my listings
-  let endpoint = "http://localhost:8080";
+  let endpoint = "https://sleepy-spire-27532.herokuapp.com";
   const decoded = jwt_decode(localStorage.getItem("token"));
   const [subleases, setSublease] = React.useState([]);
   let navigate = useNavigate();

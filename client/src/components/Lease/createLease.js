@@ -85,7 +85,7 @@ export default function CreateLease(props) {
       "Bearer " + localStorage.getItem("token");
 
     axios
-      .post("http://localhost:8080/api/lease/create", newLease)
+      .post("https://sleepy-spire-27532.herokuapp.com/api/lease/create", newLease)
       .then((res) => {
         console.log(res.data);
         navigate("/dashboard");

@@ -185,7 +185,7 @@ const Dashboard = () => {
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + localStorage.getItem("token");
       const { data } = await axios.get(
-        `http://localhost:8080/api/lease?page=${page}&s=${search}&sort=${sort}`
+        `https://sleepy-spire-27532.herokuapp.com/api/lease?page=${page}&s=${search}&sort=${sort}`
       );
       setSublease(data?.leases);
       setNumberOfPages(data?.last_page);

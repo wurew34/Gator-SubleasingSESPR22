@@ -23,7 +23,7 @@ const MySubleaseInfo = ({ sublease }) => {
   const handleClick = () => {
     //delete sublease
     axios
-      .delete(`http://localhost:8080/api/lease/${sublease._id}`, {
+      .delete(`https://sleepy-spire-27532.herokuapp.com/api/lease/${sublease._id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -40,7 +40,7 @@ const Search = (props) => {
   const [suggestions, setSuggestions] = useState([]);
 
   const loadTitles = async () => {
-    const response = await axios.get("http://localhost:8080/api/search_lease");
+    const response = await axios.get("https://sleepy-spire-27532.herokuapp.com/api/search_lease");
     console.log(response.data);
     setSuggestions(response.data);
   };

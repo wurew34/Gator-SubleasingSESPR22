@@ -40,7 +40,7 @@ const EditLease = ({ sublease }) => {
       "Bearer " + localStorage.getItem("token");
 
     axios
-      .put(`http://localhost:8080/api/lease/${sublease._id}`, changeLease)
+      .put(`https://sleepy-spire-27532.herokuapp.com/api/lease/${sublease._id}`, changeLease)
       .then((res) => {
         console.log(res.data);
         window.location.reload();

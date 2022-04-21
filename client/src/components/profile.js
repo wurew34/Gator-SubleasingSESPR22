@@ -21,7 +21,7 @@ import AppBar from "@mui/material/AppBar";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MuiAlert from "@mui/material/Alert";
 
-let endpoint = "http://localhost:8080";
+let endpoint = "https://sleepy-spire-27532.herokuapp.com";
 
 const paperStyle = {
   padding: "1.2em",
