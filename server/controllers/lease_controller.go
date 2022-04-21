@@ -431,6 +431,32 @@ func GetLeases() gin.HandlerFunc {
 
 }
 
+<<<<<<< HEAD
+func UploadLeaseImage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+
+		file, err := c.FormFile("image")
+		if err != nil {
+			log.Fatal("Error getting the file: ", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		// defer file.Close()
+		fileBytes, err := file.Open()
+		if err != nil {
+			log.Fatal("Error reading the file: ", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		leaseId := c.Param("leaseId")
+		fmt.Print("lease id: ", leaseId)
+
+		if _, err := leaseCollection.UpdateOne(ctx, bson.M{"lease_id": leaseId}, bson.M{"$set": bson.M{"image": fileBytes}}); err != nil {
+
+			log.Fatal("Error updating the lease: ", err)
+=======
 func GetUserLeases() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var leases []models.Lease
@@ -454,10 +480,17 @@ func GetUserLeases() gin.HandlerFunc {
 
 		if err != nil {
 			log.Fatal("Error getting the leases: ", err)
+>>>>>>> 4315bea8d16dfec64e11c865d688a67ffaf6f648
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
+<<<<<<< HEAD
+		c.JSON(http.StatusOK, gin.H{"message": "lease image uploaded"})
+
+	}
+
+=======
 		for cursor.Next(ctx) {
 			var lease models.Lease
 			if err := cursor.Decode(&lease); err != nil {
@@ -471,4 +504,5 @@ func GetUserLeases() gin.HandlerFunc {
 		c.JSON(http.StatusOK, leases)
 
 	}
+>>>>>>> 4315bea8d16dfec64e11c865d688a67ffaf6f648
 }
